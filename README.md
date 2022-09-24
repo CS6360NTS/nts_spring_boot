@@ -24,6 +24,7 @@ This is a Spring boot application, created to develop the secured API's for NTS 
 2. Don't merge your local branch to master branch without getting the peer review. 
 3. Make sure you cover the necessary test cases before you push (code coverage expected is 80%).
 4. Have proper variable and function naming conventions.
+5. Have proper commit names to your code checkin.
 
-Thanks for being part of Hugs for Bugs team. We wil collaborate and learn together. 
+Thanks for being part of Hugs for Bugs team. We will collaborate and learn together. 
 Happy Coding!
