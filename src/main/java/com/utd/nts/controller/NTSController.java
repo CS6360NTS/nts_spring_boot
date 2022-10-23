@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-//import com.google.gson.Gson;
 import com.utd.nts.entity.NtsUserEntity;
 import com.utd.nts.service.UserService;
 
@@ -26,7 +25,6 @@ public class NTSController {
 
 	@GetMapping("/users")
 	public Collection<NtsUserEntity> getAllUsers() {
-		// System.out.println(new Gson().toJson(userService.getUsers()));
 		return userService.getUsers();
 	}
 
