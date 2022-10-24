@@ -1,14 +1,14 @@
 package com.utd.nts.controller;
 
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.utd.nts.entity.NtsUserEntity;
+import com.utd.nts.reqres.pojo.NtsUserResponse;
 import com.utd.nts.service.UserService;
 
 @RestController
@@ -24,8 +24,13 @@ public class NTSController {
 	}
 
 	@GetMapping("/users")
-	public Collection<NtsUserEntity> getAllUsers() {
+	public NtsUserResponse getAllUsers() {
 		return userService.getUsers();
+	}
+	
+	@GetMapping("/user")
+	public void getUserWithId(@RequestParam int clientId) {
+		
 	}
 
 	@PostMapping("/addUser")

@@ -57,5 +57,8 @@ public class NtsUserEntity {
 
 	@Column(name = "zip_code")
 	String zipCode;
+	
+	@Column(name = "nts_user_password")
+	String password;
 
 }

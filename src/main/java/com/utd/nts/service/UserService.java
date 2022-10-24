@@ -1,8 +1,7 @@
 package com.utd.nts.service;
 
-import java.util.Collection;
-
 import com.utd.nts.entity.NtsUserEntity;
+import com.utd.nts.reqres.pojo.NtsUserResponse;
 
 /**
  * 
@@ -11,7 +10,7 @@ import com.utd.nts.entity.NtsUserEntity;
  */
 public interface UserService {
 
-	public abstract Collection<NtsUserEntity> getUsers();
+	public abstract NtsUserResponse getUsers();
 
 	public abstract NtsUserEntity getUserById(int clientId);
 
