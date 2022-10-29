@@ -178,4 +178,13 @@ public class NtsUserEntity implements Serializable {
 		this.password = password;
 	}
 
+	@Override
+	public String toString() {
+		return "NtsUserEntity [clientId=" + clientId + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", emailId=" + emailId + ", phoneNumber=" + phoneNumber + ", cellPhoneNumber=" + cellPhoneNumber
+				+ ", userType=" + userType + ", streetAddress=" + streetAddress + ", city=" + city + ", state=" + state
+				+ ", zipCode=" + zipCode + ", password=" + password + "]";
+	}
+	
+	
 }

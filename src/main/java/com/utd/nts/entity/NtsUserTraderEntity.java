@@ -7,6 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * 
+ * @author NXB210086
+ *
+ */
 @Entity
 @Table(name = "nts_user_trader")
 public class NtsUserTraderEntity implements Serializable {
@@ -31,12 +36,6 @@ public class NtsUserTraderEntity implements Serializable {
 
 	@Column(name = "trader_level")
 	String traderLevel;
-
-	@Override
-	public String toString() {
-		return "NtsUserTraderEntity [clientId=" + clientId + ", isActive=" + isActive + ", ethereumAddress="
-				+ ethereumAddress + ", balance=" + balance + ", traderLevel=" + traderLevel + "]";
-	}
 
 	public NtsUserTraderEntity() {
 		super();
@@ -92,4 +91,9 @@ public class NtsUserTraderEntity implements Serializable {
 		this.traderLevel = traderLevel;
 	}
 
+	@Override
+	public String toString() {
+		return "NtsUserTraderEntity [clientId=" + clientId + ", isActive=" + isActive + ", ethereumAddress="
+				+ ethereumAddress + ", balance=" + balance + ", traderLevel=" + traderLevel + "]";
+	}
 }

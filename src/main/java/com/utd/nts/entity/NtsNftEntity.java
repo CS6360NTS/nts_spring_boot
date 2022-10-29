@@ -7,6 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * 
+ * @author NXB210086
+ *
+ */
 @Entity
 @Table(name = "nts_nft")
 public class NtsNftEntity implements Serializable {
@@ -70,6 +75,12 @@ public class NtsNftEntity implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@Override
+	public String toString() {
+		return "NtsNftEntity [tokenId=" + tokenId + ", contractEthereumAddress=" + contractEthereumAddress + ", name="
+				+ name + ", description=" + description + "]";
 	}
 
 }
