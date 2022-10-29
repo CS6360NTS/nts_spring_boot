@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.utd.nts.entity.NtsUserEntity;
+import com.utd.nts.reqres.pojo.NtsTradeUserResponse;
 import com.utd.nts.reqres.pojo.NtsUserResponse;
 import com.utd.nts.service.UserService;
 
@@ -29,8 +30,8 @@ public class NTSController {
 	}
 	
 	@GetMapping("/user")
-	public void getUserWithId(@RequestParam int clientId) {
-		
+	public NtsTradeUserResponse getUserWithId(@RequestParam int clientId) {
+		return userService.getUserTraderById(clientId);
 	}
 
 	@PostMapping("/addUser")
