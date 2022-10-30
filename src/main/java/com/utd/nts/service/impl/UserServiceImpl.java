@@ -135,6 +135,8 @@ public class UserServiceImpl implements UserService {
 				managerInfo.setClientId(userInfo.getClientId());
 				// By default new manager is active
 				managerInfo.setActive(Boolean.TRUE);
+				managerInfo = ntsUserManagerRepo.save(managerInfo);
+				response.setNtsUserManagerEntity(managerInfo);
 			}
 		} catch (Exception e) {
 			log.error("Exception occured while creating a new user profile" + e.getMessage());
