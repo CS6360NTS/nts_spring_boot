@@ -2,6 +2,7 @@ package com.utd.nts.reqres.pojo;
 
 import com.utd.nts.common.pojo.ServerStatusResponsePojo;
 import com.utd.nts.entity.NtsUserEntity;
+import com.utd.nts.entity.NtsUserManagerEntity;
 import com.utd.nts.entity.NtsUserTraderEntity;
 
 /**
@@ -13,6 +14,8 @@ import com.utd.nts.entity.NtsUserTraderEntity;
 public class NtsTradeUserResponse {
 	NtsUserEntity userInfo;
 	NtsUserTraderEntity tradeInfo;
+	NtsUserManagerEntity managerInfo;
+
 	ServerStatusResponsePojo serverResponse;
 
 	public NtsTradeUserResponse() {
@@ -20,17 +23,12 @@ public class NtsTradeUserResponse {
 	}
 
 	public NtsTradeUserResponse(NtsUserEntity userInfo, NtsUserTraderEntity tradeInfo,
-			ServerStatusResponsePojo serverResponse) {
+			NtsUserManagerEntity ntsUserManagerEntity, ServerStatusResponsePojo serverResponse) {
 		super();
 		this.userInfo = userInfo;
 		this.tradeInfo = tradeInfo;
+		this.managerInfo = ntsUserManagerEntity;
 		this.serverResponse = serverResponse;
-	}
-
-	@Override
-	public String toString() {
-		return "NtsTradeUserResponse [userInfo=" + userInfo + ", tradeInfo=" + tradeInfo + ", serverResponse="
-				+ serverResponse + "]";
 	}
 
 	public NtsUserEntity getUserInfo() {
@@ -56,4 +54,19 @@ public class NtsTradeUserResponse {
 	public void setServerResponse(ServerStatusResponsePojo serverResponse) {
 		this.serverResponse = serverResponse;
 	}
+
+	public NtsUserManagerEntity getNtsUserManagerEntity() {
+		return managerInfo;
+	}
+
+	public void setNtsUserManagerEntity(NtsUserManagerEntity ntsUserManagerEntity) {
+		this.managerInfo = ntsUserManagerEntity;
+	}
+
+	@Override
+	public String toString() {
+		return "NtsTradeUserResponse [userInfo=" + userInfo + ", tradeInfo=" + tradeInfo + ", ntsUserManagerEntity="
+				+ managerInfo + ", serverResponse=" + serverResponse + "]";
+	}
+
 }

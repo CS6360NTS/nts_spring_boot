@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.utd.nts.common.pojo.ServerStatusResponsePojo;
 import com.utd.nts.entity.NtsUserEntity;
+import com.utd.nts.entity.NtsUserManagerEntity;
 import com.utd.nts.entity.NtsUserTraderEntity;
+import com.utd.nts.repository.NtsUserManagerRepo;
 import com.utd.nts.repository.NtsUserRepository;
 import com.utd.nts.repository.NtsUserTraderRepository;
 import com.utd.nts.reqres.pojo.NtsTradeUserResponse;
@@ -26,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private NtsUserTraderRepository ntsUserTraderRepository;
+
+	@Autowired
+	private NtsUserManagerRepo ntsUserManagerRepo;
 
 	@Override
 	public NtsUserResponse getUsers() {
@@ -62,8 +67,15 @@ public class UserServiceImpl implements UserService {
 			Optional<NtsUserEntity> userInfo = ntsUserRepository.findById(clientId);
 			// System.out.println(new Gson().toJson(userInfo.get()));
 			response.setUserInfo(userInfo.get());
-			Optional<NtsUserTraderEntity> tradeInfo = ntsUserTraderRepository.findById(clientId);
-			response.setTradeInfo(tradeInfo.get());
+
+			// If trader get the trade info else get the manager info
+			if (userInfo.get().getUserType() == 'T') {
+				Optional<NtsUserTraderEntity> tradeInfo = ntsUserTraderRepository.findById(clientId);
+				response.setTradeInfo(tradeInfo.get());
+			} else {
+				Optional<NtsUserManagerEntity> managerInfo = ntsUserManagerRepo.findById(clientId);
+				response.setNtsUserManagerEntity(managerInfo.get());
+			}
 			serverRes.setResponseCode(200);
 			serverRes.setSuccess(true);
 			response.setServerResponse(serverRes);
