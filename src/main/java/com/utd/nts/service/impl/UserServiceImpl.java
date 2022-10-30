@@ -1,13 +1,13 @@
 package com.utd.nts.service.impl;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.Gson;
 import com.utd.nts.common.pojo.ServerStatusResponsePojo;
 import com.utd.nts.entity.NtsUserEntity;
 import com.utd.nts.entity.NtsUserManagerEntity;
@@ -15,10 +15,16 @@ import com.utd.nts.entity.NtsUserTraderEntity;
 import com.utd.nts.repository.NtsUserManagerRepo;
 import com.utd.nts.repository.NtsUserRepository;
 import com.utd.nts.repository.NtsUserTraderRepository;
+import com.utd.nts.reqres.pojo.NewUserRequest;
 import com.utd.nts.reqres.pojo.NtsTradeUserResponse;
 import com.utd.nts.reqres.pojo.NtsUserResponse;
 import com.utd.nts.service.UserService;
 
+/**
+ * 
+ * @author NXB210086
+ *
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -54,12 +60,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void addUser(NtsUserEntity newUser) {
-		System.out.println(new Gson().toJson(newUser));
-
-	}
-
-	@Override
 	public NtsTradeUserResponse getUserTraderById(int clientId) {
 		NtsTradeUserResponse response = new NtsTradeUserResponse();
 		ServerStatusResponsePojo serverRes = new ServerStatusResponsePojo();
@@ -90,6 +90,60 @@ public class UserServiceImpl implements UserService {
 			return response;
 		}
 		return response;
+	}
+
+	@Override
+	public NtsTradeUserResponse addUser(NewUserRequest newUser) {
+		NtsTradeUserResponse response = new NtsTradeUserResponse();
+		ServerStatusResponsePojo serverRes = new ServerStatusResponsePojo();
+		try {
+			NtsUserEntity userInfo = ntsUserRepository.save(newUser.getUserInfo());
+			response.setUserInfo(userInfo);
+			if (userInfo.getUserType() == 'T') {
+				NtsUserTraderEntity reqObj = new NtsUserTraderEntity();
+
+				// By default new user is active
+				reqObj.setActive(Boolean.TRUE);
+
+				// We are getting the client id that is auto generated
+				reqObj.setClientId(userInfo.getClientId());
+
+				// creating uuid and converting it to string
+				UUID uuid = UUID.randomUUID();
+				reqObj.setEthereumAddress(uuid.toString());
+
+				// By default the new user will be in the silver level
+				reqObj.setTraderLevel("silver");
+
+				/**
+				 * for now let's say every user we created is initialized with the default
+				 * balance of 1000$
+				 */
+				reqObj.setBalance(1000);
+				// System.out.println(new Gson().toJson(reqObj));
+				NtsUserTraderEntity newNtsUserTraderEntity = ntsUserTraderRepository.save(reqObj);
+				response.setTradeInfo(newNtsUserTraderEntity);
+			} else {
+				NtsUserManagerEntity managerInfo = new NtsUserManagerEntity();
+
+				// We are getting the client id that is auto generated
+				managerInfo.setClientId(userInfo.getClientId());
+				// By default new manager is active
+				managerInfo.setActive(Boolean.TRUE);
+			}
+		} catch (Exception e) {
+			log.error("Exception occured while creating a new user profile" + e.getMessage());
+			response.setTradeInfo(null);
+			response.setUserInfo(null);
+			serverRes.setErrorMessage("Error occured at UserServiceImpl.getUsers");
+			serverRes.setResponseCode(500);
+			serverRes.setSuccess(false);
+			response.setServerResponse(serverRes);
+			return response;
+		}
+
+		return response;
+
 	}
 
 }

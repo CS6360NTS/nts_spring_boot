@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 /**
  * 
  * @author navaneethkumarbuddi
@@ -23,7 +26,15 @@ public class NtsUserEntity implements Serializable {
 	private static final long serialVersionUID = -1782270804769395502L;
 
 	@Id
-	@GeneratedValue
+	@GenericGenerator(
+		    name = "users-sequence-generator",
+		    strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+		    parameters = {
+		            @Parameter(name = "sequence_name", value = "users_sequence"),
+		            @Parameter(name = "initial_value", value = "1000"),
+		            @Parameter(name = "increment_size", value = "1")
+		    })
+	@GeneratedValue(generator = "users-sequence-generator")
 	@Column(name = "client_id")
 	int clientId;
 
