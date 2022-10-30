@@ -63,4 +63,9 @@ public class NTSController {
 	public NFTsRes getAllNftsByContractEthereumAddress(@RequestParam String contractEthereumAddress) {
 		return nFTService.getAllNtsWithContractEthereumAddress(contractEthereumAddress);
 	}
+
+//	@GetMapping("/create/nfts")
+//	public NFTsRes createNfts(@RequestParam String name, @RequestParam String desc, @RequestParam int noOfCopies) {
+//		return nFTService.createNft(name, desc, noOfCopies);
+//	}
 }

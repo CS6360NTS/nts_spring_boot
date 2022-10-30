@@ -1,7 +1,9 @@
 package com.utd.nts.service.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,9 +77,50 @@ public class NFTServiceImpl implements NFTService {
 	}
 
 	@Override
-	public NFTsRes createNft(String name, String desc) {
-		// TODO Auto-generated method stub
-		return null;
+	public NFTsRes createNft(String name, String desc, int noOfCopies) {
+		NFTsRes res = new NFTsRes();
+		Collection<NtsNftEntity> nfts = new ArrayList<>();
+		ServerStatusResponsePojo serverRes = new ServerStatusResponsePojo();
+		try {
+			UUID uuid = UUID.randomUUID();
+			// For now let's limit it's value to 99
+			for (int i = 1; i <= Integer.min(noOfCopies, 99); i++) {
+				nfts.add(createANftCopy(uuid.toString(), name, desc, i));
+			}
+			res.setNfts(nfts);
+			serverRes.setErrorMessage("SUCCESS");
+		} catch (Exception e) {
+			log.error("Exception occured while saving the NFT" + e.getMessage());
+			serverRes.setErrorMessage("Error occured at NFTServiceImpl.createNft");
+			serverRes.setResponseCode(500);
+			serverRes.setSuccess(false);
+			res.setServerResponse(serverRes);
+			return res;
+		}
+		serverRes.setResponseCode(200);
+		serverRes.setSuccess(true);
+		res.setServerResponse(serverRes);
+		return res;
+	}
+
+	private static NtsNftEntity createANftCopy(String contractEthereumAddress, String name, String desc, int copy)
+			throws Exception {
+		NtsNftEntity res = new NtsNftEntity();
+		try {
+			NtsNftEntity req = new NtsNftEntity();
+			UUID uuid = UUID.randomUUID();
+			req.setTokenId(uuid.toString());
+			req.setContractEthereumAddress(contractEthereumAddress);
+			req.setName(name);
+			req.setDescription("Copy " + copy);
+			//res = nftRepo.save(req);
+
+		} catch (Exception e) {
+			log.error("Exception occured while saving the NFTs" + e.getMessage());
+			throw e;
+		}
+		return res;
+
 	}
 
 	@Override
