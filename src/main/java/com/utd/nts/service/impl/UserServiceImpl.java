@@ -56,6 +56,10 @@ public class UserServiceImpl implements UserService {
 			response.setServerResponse(serverRes);
 			return response;
 		}
+		serverRes.setErrorMessage("SUCCESS");
+		serverRes.setResponseCode(200);
+		serverRes.setSuccess(true);
+		response.setServerResponse(serverRes);
 		return response;
 	}
 
@@ -76,19 +80,20 @@ public class UserServiceImpl implements UserService {
 				Optional<NtsUserManagerEntity> managerInfo = ntsUserManagerRepo.findById(clientId);
 				response.setNtsUserManagerEntity(managerInfo.get());
 			}
-			serverRes.setResponseCode(200);
-			serverRes.setSuccess(true);
-			response.setServerResponse(serverRes);
 		} catch (Exception e) {
 			log.error("Exception occured while fetching the user/ user trade records form the DB" + e.getMessage());
 			response.setTradeInfo(null);
 			response.setUserInfo(null);
-			serverRes.setErrorMessage("Error occured at UserServiceImpl.getUsers");
+			serverRes.setErrorMessage("Error occured at UserServiceImpl.getUserTraderById");
 			serverRes.setResponseCode(500);
 			serverRes.setSuccess(false);
 			response.setServerResponse(serverRes);
 			return response;
 		}
+		serverRes.setErrorMessage("SUCCESS");
+		serverRes.setResponseCode(200);
+		serverRes.setSuccess(true);
+		response.setServerResponse(serverRes);
 		return response;
 	}
 
@@ -135,13 +140,16 @@ public class UserServiceImpl implements UserService {
 			log.error("Exception occured while creating a new user profile" + e.getMessage());
 			response.setTradeInfo(null);
 			response.setUserInfo(null);
-			serverRes.setErrorMessage("Error occured at UserServiceImpl.getUsers");
+			serverRes.setErrorMessage("Error occured at UserServiceImpl.addUser");
 			serverRes.setResponseCode(500);
 			serverRes.setSuccess(false);
 			response.setServerResponse(serverRes);
 			return response;
 		}
-
+		serverRes.setErrorMessage("SUCCESS");
+		serverRes.setResponseCode(200);
+		serverRes.setSuccess(true);
+		response.setServerResponse(serverRes);
 		return response;
 
 	}
