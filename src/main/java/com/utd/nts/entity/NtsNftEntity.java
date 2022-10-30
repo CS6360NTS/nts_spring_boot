@@ -34,14 +34,14 @@ public class NtsNftEntity implements Serializable {
 	String description;
 
 	@Column(name = "eth_price")
-	String ethPrice;
+	double ethPrice;
 
 	public NtsNftEntity() {
 		super();
 	}
 
 	public NtsNftEntity(String tokenId, String contractEthereumAddress, String name, String description,
-			String ethPrice) {
+			double ethPrice) {
 		super();
 		this.tokenId = tokenId;
 		this.contractEthereumAddress = contractEthereumAddress;
@@ -82,11 +82,11 @@ public class NtsNftEntity implements Serializable {
 		this.description = description;
 	}
 
-	public String getEthPrice() {
+	public double getEthPrice() {
 		return ethPrice;
 	}
 
-	public void setEthPrice(String ethPrice) {
+	public void setEthPrice(double ethPrice) {
 		this.ethPrice = ethPrice;
 	}
 

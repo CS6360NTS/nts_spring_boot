@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
 import com.utd.nts.common.pojo.ServerStatusResponsePojo;
 import com.utd.nts.entity.NtsNftEntity;
 import com.utd.nts.repository.NftRepo;
@@ -77,7 +78,7 @@ public class NFTServiceImpl implements NFTService {
 	}
 
 	@Override
-	public NFTsRes createNft(String name, String desc, int noOfCopies) {
+	public NFTsRes createNft(String name, double ethPrice, int noOfCopies) {
 		NFTsRes res = new NFTsRes();
 		Collection<NtsNftEntity> nfts = new ArrayList<>();
 		ServerStatusResponsePojo serverRes = new ServerStatusResponsePojo();
@@ -85,7 +86,7 @@ public class NFTServiceImpl implements NFTService {
 			UUID uuid = UUID.randomUUID();
 			// For now let's limit it's value to 99
 			for (int i = 1; i <= Integer.min(noOfCopies, 99); i++) {
-				nfts.add(createANftCopy(uuid.toString(), name, desc, i));
+				nfts.add(createANftCopy(uuid.toString(), name, ethPrice, i));
 			}
 			res.setNfts(nfts);
 			serverRes.setErrorMessage("SUCCESS");
@@ -103,23 +104,25 @@ public class NFTServiceImpl implements NFTService {
 		return res;
 	}
 
-	private static NtsNftEntity createANftCopy(String contractEthereumAddress, String name, String desc, int copy)
+	private NtsNftEntity createANftCopy(String contractEthereumAddress, String name, double ethPrice, int copy)
 			throws Exception {
-		NtsNftEntity res = new NtsNftEntity();
+		NtsNftEntity req = new NtsNftEntity();
 		try {
-			NtsNftEntity req = new NtsNftEntity();
+
 			UUID uuid = UUID.randomUUID();
 			req.setTokenId(uuid.toString());
 			req.setContractEthereumAddress(contractEthereumAddress);
 			req.setName(name);
 			req.setDescription("Copy " + copy);
-			//res = nftRepo.save(req);
+			req.setEthPrice(ethPrice);
+			req = nftRepo.save(req);
+			// System.out.println(new Gson().toJson(req));
 
 		} catch (Exception e) {
 			log.error("Exception occured while saving the NFTs" + e.getMessage());
 			throw e;
 		}
-		return res;
+		return req;
 
 	}
 

@@ -16,5 +16,5 @@ public interface NFTService {
 
 	public abstract NFTsRes getAllNtsWithContractEthereumAddress(String contractEthereumAddress);
 
-	public abstract NFTsRes createNft(String name, String desc,int noOfCopies);
+	public abstract NFTsRes createNft(String name, double ethPrice,int noOfCopies);
 }
