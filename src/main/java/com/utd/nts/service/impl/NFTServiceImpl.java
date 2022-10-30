@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.utd.nts.common.pojo.ServerStatusResponsePojo;
 import com.utd.nts.entity.NtsNftEntity;
@@ -17,7 +18,9 @@ import com.utd.nts.repository.NftRepo;
 import com.utd.nts.repository.NtsTraderOwnsNftRepo;
 import com.utd.nts.reqres.pojo.NFTRes;
 import com.utd.nts.reqres.pojo.NFTsRes;
+import com.utd.nts.reqres.pojo.NtsTradeUserResponse;
 import com.utd.nts.service.NFTService;
+import com.utd.nts.service.UserService;
 
 /**
  * 
@@ -32,6 +35,9 @@ public class NFTServiceImpl implements NFTService {
 
 	@Autowired
 	private NtsTraderOwnsNftRepo ntsTraderOwnsNftRepo;
+
+	@Autowired
+	private UserService userService;
 
 	@Override
 	public NFTsRes getAllNtfs() {
@@ -83,28 +89,34 @@ public class NFTServiceImpl implements NFTService {
 
 	@Override
 	public NFTsRes createNft(int clientId, String name, double ethPrice, int noOfCopies) {
+		NtsTradeUserResponse userServiceRes = userService.getUserTraderById(clientId);
 		NFTsRes res = new NFTsRes();
-		Collection<NtsNftEntity> nfts = new ArrayList<>();
-		ServerStatusResponsePojo serverRes = new ServerStatusResponsePojo();
-		try {
-			UUID uuid = UUID.randomUUID();
-			// For now let's limit it's value to 99
-			for (int i = 1; i <= Integer.min(noOfCopies, 99); i++) {
-				nfts.add(createANftCopy(clientId, uuid.toString(), name, ethPrice, i));
+		if (userServiceRes.getUserInfo() != null) {
+
+			Collection<NtsNftEntity> nfts = new ArrayList<>();
+			ServerStatusResponsePojo serverRes = new ServerStatusResponsePojo();
+			try {
+				UUID uuid = UUID.randomUUID();
+				// For now let's limit it's value to 99
+				for (int i = 1; i <= Integer.min(noOfCopies, 99); i++) {
+					nfts.add(createANftCopy(clientId, uuid.toString(), name, ethPrice, i));
+				}
+				res.setNfts(nfts);
+				serverRes.setErrorMessage("SUCCESS");
+			} catch (Exception e) {
+				log.error("Exception occured while saving the NFT" + e.getMessage());
+				serverRes.setErrorMessage("Error occured at NFTServiceImpl.createNft");
+				serverRes.setResponseCode(500);
+				serverRes.setSuccess(false);
+				res.setServerResponse(serverRes);
+				return res;
 			}
-			res.setNfts(nfts);
-			serverRes.setErrorMessage("SUCCESS");
-		} catch (Exception e) {
-			log.error("Exception occured while saving the NFT" + e.getMessage());
-			serverRes.setErrorMessage("Error occured at NFTServiceImpl.createNft");
-			serverRes.setResponseCode(500);
-			serverRes.setSuccess(false);
+			serverRes.setResponseCode(200);
+			serverRes.setSuccess(true);
 			res.setServerResponse(serverRes);
 			return res;
 		}
-		serverRes.setResponseCode(200);
-		serverRes.setSuccess(true);
-		res.setServerResponse(serverRes);
+		res.setServerResponse(userServiceRes.getServerResponse());
 		return res;
 	}
 
