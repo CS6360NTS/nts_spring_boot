@@ -70,6 +70,13 @@ public class UserServiceImpl implements UserService {
 		try {
 			Optional<NtsUserEntity> userInfo = ntsUserRepository.findById(clientId);
 			// System.out.println(new Gson().toJson(userInfo.get()));
+			if (userInfo.isEmpty()) {
+				serverRes.setErrorMessage("clientId doesn't exist");
+				serverRes.setResponseCode(200);
+				serverRes.setSuccess(true);
+				response.setServerResponse(serverRes);
+				return response;
+			}
 			response.setUserInfo(userInfo.get());
 
 			// If trader get the trade info else get the manager info
