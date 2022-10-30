@@ -10,10 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.Gson;
 import com.utd.nts.common.pojo.ServerStatusResponsePojo;
 import com.utd.nts.entity.NtsNftEntity;
+import com.utd.nts.entity.NtsTraderOwnsNft;
 import com.utd.nts.repository.NftRepo;
+import com.utd.nts.repository.NtsTraderOwnsNftRepo;
 import com.utd.nts.reqres.pojo.NFTRes;
 import com.utd.nts.reqres.pojo.NFTsRes;
 import com.utd.nts.service.NFTService;
@@ -28,6 +29,9 @@ public class NFTServiceImpl implements NFTService {
 	public static final Logger log = LoggerFactory.getLogger(NFTServiceImpl.class);
 	@Autowired
 	private NftRepo nftRepo;
+
+	@Autowired
+	private NtsTraderOwnsNftRepo ntsTraderOwnsNftRepo;
 
 	@Override
 	public NFTsRes getAllNtfs() {
@@ -78,7 +82,7 @@ public class NFTServiceImpl implements NFTService {
 	}
 
 	@Override
-	public NFTsRes createNft(String name, double ethPrice, int noOfCopies) {
+	public NFTsRes createNft(int clientId, String name, double ethPrice, int noOfCopies) {
 		NFTsRes res = new NFTsRes();
 		Collection<NtsNftEntity> nfts = new ArrayList<>();
 		ServerStatusResponsePojo serverRes = new ServerStatusResponsePojo();
@@ -86,7 +90,7 @@ public class NFTServiceImpl implements NFTService {
 			UUID uuid = UUID.randomUUID();
 			// For now let's limit it's value to 99
 			for (int i = 1; i <= Integer.min(noOfCopies, 99); i++) {
-				nfts.add(createANftCopy(uuid.toString(), name, ethPrice, i));
+				nfts.add(createANftCopy(clientId, uuid.toString(), name, ethPrice, i));
 			}
 			res.setNfts(nfts);
 			serverRes.setErrorMessage("SUCCESS");
@@ -104,8 +108,8 @@ public class NFTServiceImpl implements NFTService {
 		return res;
 	}
 
-	private NtsNftEntity createANftCopy(String contractEthereumAddress, String name, double ethPrice, int copy)
-			throws Exception {
+	private NtsNftEntity createANftCopy(int clientId, String contractEthereumAddress, String name, double ethPrice,
+			int copy) throws Exception {
 		NtsNftEntity req = new NtsNftEntity();
 		try {
 
@@ -118,12 +122,27 @@ public class NFTServiceImpl implements NFTService {
 			req = nftRepo.save(req);
 			// System.out.println(new Gson().toJson(req));
 
+			// Creator will be the owner of the NFT's
+			addNftOwnership(req, clientId);
+
 		} catch (Exception e) {
 			log.error("Exception occured while saving the NFTs" + e.getMessage());
 			throw e;
 		}
 		return req;
 
+	}
+
+	private void addNftOwnership(NtsNftEntity req, int clientId) throws Exception {
+		NtsTraderOwnsNft db_save_req = new NtsTraderOwnsNft();
+		try {
+			db_save_req.setClientId(clientId);
+			db_save_req.setTokenId(req.getTokenId());
+			ntsTraderOwnsNftRepo.save(db_save_req);
+		} catch (Exception e) {
+			log.error("Exception occured while saving the NftOwnership" + e.getMessage());
+			throw e;
+		}
 	}
 
 	@Override

@@ -65,7 +65,8 @@ public class NTSController {
 	}
 
 	@GetMapping("/create/nfts")
-	public NFTsRes createNfts(@RequestParam String name, @RequestParam double ethPrice, @RequestParam int noOfCopies) {
-		return nFTService.createNft(name, ethPrice, noOfCopies);
+	public NFTsRes createNfts(@RequestParam int clientId, @RequestParam String name, @RequestParam double ethPrice,
+			@RequestParam int noOfCopies) {
+		return nFTService.createNft(clientId, name, ethPrice, noOfCopies);
 	}
 }
