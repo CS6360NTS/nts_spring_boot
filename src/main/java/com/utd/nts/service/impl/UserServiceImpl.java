@@ -163,4 +163,64 @@ public class UserServiceImpl implements UserService {
 
 	}
 
+	@Override
+	public NtsTradeUserResponse updateUserInfo(NewUserRequest updateUser) {
+		NtsTradeUserResponse response = new NtsTradeUserResponse();
+		ServerStatusResponsePojo serverRes = new ServerStatusResponsePojo();
+		try {
+			Optional<NtsUserEntity> userInfo = ntsUserRepository.findById(updateUser.getUserInfo().getClientId());
+			NtsUserEntity resFromDb = userInfo.get();
+			NtsUserEntity updateReq = updateUser.getUserInfo();
+
+			// We will update all the details that was passed with the request
+			if (updateReq.getFirstName() != null) {
+				resFromDb.setFirstName(updateReq.getFirstName());
+			}
+			if (updateReq.getLastName() != null) {
+				resFromDb.setLastName(updateReq.getLastName());
+			}
+			if (updateReq.getEmailId() != null) {
+				resFromDb.setEmailId(updateReq.getEmailId());
+			}
+			if (updateReq.getPhoneNumber() != null) {
+				resFromDb.setPhoneNumber(updateReq.getPhoneNumber());
+			}
+
+			if (updateReq.getCellPhoneNumber() != null) {
+				resFromDb.setCellPhoneNumber(updateReq.getCellPhoneNumber());
+			}
+			if (updateReq.getStreetAddress() != null) {
+				resFromDb.setStreetAddress(updateReq.getStreetAddress());
+			}
+			if (updateReq.getCity() != null) {
+				resFromDb.setCity(updateReq.getCity());
+			}
+			if (updateReq.getState() != null) {
+				resFromDb.setState(updateReq.getState());
+			}
+			if (updateReq.getZipCode() != null) {
+				resFromDb.setZipCode(updateReq.getZipCode());
+			}
+			if (updateReq.getPassword() != null) {
+				resFromDb.setPassword(updateReq.getPassword());
+			}
+			resFromDb = ntsUserRepository.save(resFromDb);
+			response.setUserInfo(resFromDb);
+		} catch (Exception e) {
+			log.error("Exception occured while updating the user profile" + e.getMessage());
+			response.setTradeInfo(null);
+			response.setUserInfo(null);
+			serverRes.setErrorMessage("Error occured while updating the user profile");
+			serverRes.setResponseCode(500);
+			serverRes.setSuccess(false);
+			response.setServerResponse(serverRes);
+			return response;
+		}
+		serverRes.setErrorMessage("SUCCESS");
+		serverRes.setResponseCode(200);
+		serverRes.setSuccess(true);
+		response.setServerResponse(serverRes);
+		return response;
+	}
+
 }

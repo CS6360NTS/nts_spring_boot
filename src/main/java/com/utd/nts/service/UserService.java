@@ -17,4 +17,6 @@ public interface UserService {
 
 	public abstract NtsTradeUserResponse addUser(NewUserRequest newUser);
 
+	public abstract NtsTradeUserResponse updateUserInfo(NewUserRequest newUser);
+
 }

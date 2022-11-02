@@ -48,6 +48,11 @@ public class NTSController {
 		return userService.addUser(user);
 	}
 
+	@PostMapping(path = "/updateUser", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public NtsTradeUserResponse updateUser(@RequestBody NewUserRequest user) {
+		return userService.updateUserInfo(user);
+	}
+
 	/** NFT API's **/
 	@GetMapping("/nfts")
 	public NFTsRes getAllNfts() {
