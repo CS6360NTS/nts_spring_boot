@@ -45,6 +45,7 @@ public class NTSController {
 
 	@PostMapping(path = "/addUser", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public NtsTradeUserResponse addUser(@RequestBody NewUserRequest user) {
+		System.out.println(user.toString());
 		return userService.addUser(user);
 	}
 
