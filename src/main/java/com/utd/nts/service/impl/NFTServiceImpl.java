@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import com.utd.nts.common.pojo.ServerStatusResponsePojo;
 import com.utd.nts.entity.NtsNftEntity;
@@ -18,6 +17,7 @@ import com.utd.nts.repository.NftRepo;
 import com.utd.nts.repository.NtsTraderOwnsNftRepo;
 import com.utd.nts.reqres.pojo.NFTRes;
 import com.utd.nts.reqres.pojo.NFTsRes;
+import com.utd.nts.reqres.pojo.NtsNftOwnsRes;
 import com.utd.nts.reqres.pojo.NtsTradeUserResponse;
 import com.utd.nts.service.NFTService;
 import com.utd.nts.service.UserService;
@@ -174,6 +174,48 @@ public class NFTServiceImpl implements NFTService {
 			res.setServerResponse(serverRes);
 			return res;
 		}
+		serverRes.setResponseCode(200);
+		serverRes.setSuccess(true);
+		res.setServerResponse(serverRes);
+		return res;
+	}
+
+	@Override
+	public NtsNftOwnsRes getAllNftsWithTheClientId(int clientId) {
+		NtsNftOwnsRes res = new NtsNftOwnsRes();
+		ServerStatusResponsePojo serverRes = new ServerStatusResponsePojo();
+		try {
+			res.setNfts(ntsTraderOwnsNftRepo.findAllNftsByClientId(clientId));
+		} catch (Exception e) {
+			log.error("Exception occured while fetching the NFT's form the DB" + e.getMessage());
+			serverRes.setErrorMessage("Error occured at NFTServiceImpl.getAllNftsWithTheClientId");
+			serverRes.setResponseCode(500);
+			serverRes.setSuccess(false);
+			res.setServerResponse(serverRes);
+			return res;
+		}
+		serverRes.setErrorMessage("SUCCESS");
+		serverRes.setResponseCode(200);
+		serverRes.setSuccess(true);
+		res.setServerResponse(serverRes);
+		return res;
+	}
+
+	@Override
+	public NtsNftOwnsRes getAllNftsWithExcludingTheClientId(int clientId) {
+		NtsNftOwnsRes res = new NtsNftOwnsRes();
+		ServerStatusResponsePojo serverRes = new ServerStatusResponsePojo();
+		try {
+			res.setNfts(ntsTraderOwnsNftRepo.findAllNftsByExcludingClientId(clientId));
+		} catch (Exception e) {
+			log.error("Exception occured while fetching the NFT's form the DB" + e.getMessage());
+			serverRes.setErrorMessage("Error occured at NFTServiceImpl.getAllNftsWithTheClientId");
+			serverRes.setResponseCode(500);
+			serverRes.setSuccess(false);
+			res.setServerResponse(serverRes);
+			return res;
+		}
+		serverRes.setErrorMessage("SUCCESS");
 		serverRes.setResponseCode(200);
 		serverRes.setSuccess(true);
 		res.setServerResponse(serverRes);
