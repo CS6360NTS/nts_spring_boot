@@ -99,4 +99,16 @@ public class NTSController {
 	public ServerStatusResponsePojo addMoneyFromBofa(@RequestParam int clientId, @RequestParam double amount) {
 		return ntsMoneyService.addMoneyFromBofa(clientId, amount);
 	}
+
+	@GetMapping("/debitMoneyFromWallet")
+	public ServerStatusResponsePojo debitMoneyFormWallet(@RequestParam int clientId, @RequestParam double amount) {
+		return ntsMoneyService.debitMoneyFormWallet(clientId, amount);
+
+	}
+
+	@GetMapping()
+	public ServerStatusResponsePojo transferWalletAmountToEth(@RequestParam int clientId, @RequestParam double amount) {
+		return null;
+	}
+
 }
