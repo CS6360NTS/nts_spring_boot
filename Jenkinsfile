@@ -1,7 +1,7 @@
 #!groovy
 
 pipeline {
-    agent none
+    agent any
     environment {
 
         GITHUB_AUTH_TOKEN = credentials('55fb07f1-fef6-4cf3-b9c7-067db4ecb7cb')
