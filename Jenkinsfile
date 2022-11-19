@@ -20,7 +20,7 @@ pipeline {
         }
         stage ('Docker Build') {
             steps {
-                sh 'docker build -t gcr.io/nts-spring-boot/app-$BUILD_NUMBER  .' 
+                sh 'docker build -t gcr.io/nts-spring-boot/app:$BUILD_NUMBER  .' 
             }
             
 
