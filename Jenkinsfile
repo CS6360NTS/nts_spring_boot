@@ -15,6 +15,14 @@ pipeline {
             steps {
                 sh '/usr/local/maven/bin/mvn -Dmaven.test.failure.ignore=true install' 
             }
+            
+
+        }
+        stage ('Docker Build') {
+            steps {
+                sh 'docker build .' 
+            }
+            
 
         }
     }
