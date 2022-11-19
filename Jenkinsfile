@@ -5,8 +5,7 @@ pipeline {
         stage ('Initialize') {
             steps {
                 sh '''
-                    echo "PATH = ${PATH}"
-                    echo "M2_HOME = ${M2_HOME}"
+
                     echo "MAVEN_HOME = ${MAVEN_HOME}"
                 '''
             }
@@ -14,7 +13,7 @@ pipeline {
 
         stage ('Build') {
             steps {
-                sh 'mvn -Dmaven.test.failure.ignore=true install' 
+                sh '/usr/local/maven/bin/mvn -Dmaven.test.failure.ignore=true install' 
             }
             post {
                 success {
