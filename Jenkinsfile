@@ -27,6 +27,7 @@ pipeline {
         }
         stage ('Docker push') {
             steps {
+                sh 'gcloud auth configure-docker'
                 sh 'docker push  gcr.io/nts-spring-boot/app:$BUILD_NUMBER' 
             }
             
