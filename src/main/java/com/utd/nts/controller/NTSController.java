@@ -106,9 +106,26 @@ public class NTSController {
 
 	}
 
-	@GetMapping()
+	@GetMapping("/transferWalletAmountToEth")
 	public ServerStatusResponsePojo transferWalletAmountToEth(@RequestParam int clientId, @RequestParam double amount) {
-		return null;
+		return ntsMoneyService.transferWalletAmountToEth(clientId, amount);
+	}
+
+	@GetMapping("/transferWalletEthAmountToFait")
+	public ServerStatusResponsePojo transferWalletEthAmountToFait(@RequestParam int clientId,
+			@RequestParam double amount) {
+		return ntsMoneyService.transferWalletEthAmountToFait(clientId, amount);
+	}
+
+	@GetMapping("/addMoneyFromBofaToEthWallet")
+	public ServerStatusResponsePojo addMoneyFromBofaToEthWallet(@RequestParam int clientId,
+			@RequestParam double amount) {
+		return ntsMoneyService.addMoneyFromBofaToEthWallet(clientId, amount);
+	}
+
+	@GetMapping("/debitMoneyForEthmWallet")
+	public ServerStatusResponsePojo debitMoneyFormEthWallet(@RequestParam int clientId, @RequestParam double amount) {
+		return ntsMoneyService.debitMoneyForEthmWallet(clientId, amount);
 	}
 
 }

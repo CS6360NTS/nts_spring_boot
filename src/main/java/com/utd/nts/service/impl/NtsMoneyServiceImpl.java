@@ -142,7 +142,7 @@ public class NtsMoneyServiceImpl implements NtsMoneyService {
 			save_req_2.setMoneyTransactionType("Debit");
 			save_req_2.setTransDesc("Debit money from NTS fiat currency wallet -> BOFA");
 			long number = (long) Math.floor(Math.random() * 9_000_000_000L) + 1_000_000_000L;
-			save_req_2.setPaymentAddress("Amount credit to BOFA Account number: " + number);
+			save_req_2.setPaymentAddress("Amount: " + amount + "$ credited to BOFA Account number: " + number);
 			save_req_2 = ntsMoneyTransactionHistoryRepo.save(save_req_2);
 			// System.out.println(new Gson().toJson(save_req_2));
 
@@ -167,7 +167,7 @@ public class NtsMoneyServiceImpl implements NtsMoneyService {
 			double usd_eth_value = ethUsdService.getTheUsdValue();
 			if (!tradeInfo.isEmpty() && tradeInfo.get().getBalance() >= amount) {
 				NtsUserTraderEntity tradeInfoReq = tradeInfo.get();
-				tradeInfoReq.setEthBalance(amount / usd_eth_value);
+				tradeInfoReq.setEthBalance(tradeInfoReq.getEthBalance() + (amount / usd_eth_value));
 				tradeInfoReq.setBalance(tradeInfoReq.getBalance() - amount);
 
 				NtsUserTraderEntity tradeInfoAfterUpdate = ntsUserTraderRepository.save(tradeInfoReq);
@@ -203,7 +203,8 @@ public class NtsMoneyServiceImpl implements NtsMoneyService {
 			save_req_2.setTransDesc("Transfer money from NTS fiat currency wallet -> Eth wallet");
 			// long number = (long) Math.floor(Math.random() * 9_000_000_000L) +
 			// 1_000_000_000L;
-			save_req_2.setPaymentAddress("Amount transfered to Eth wallet");
+			save_req_2.setPaymentAddress("Amount: " + amount + "$ transfered to Eth wallet corresponding value is "
+					+ (amount / usd_eth_value) + " Ξ");
 			save_req_2 = ntsMoneyTransactionHistoryRepo.save(save_req_2);
 			// System.out.println(new Gson().toJson(save_req_2));
 
@@ -229,7 +230,7 @@ public class NtsMoneyServiceImpl implements NtsMoneyService {
 			if (!tradeInfo.isEmpty() && tradeInfo.get().getEthBalance() >= amount) {
 				NtsUserTraderEntity tradeInfoReq = tradeInfo.get();
 				tradeInfoReq.setEthBalance(tradeInfoReq.getEthBalance() - amount);
-				tradeInfoReq.setBalance(usd_eth_value * amount);
+				tradeInfoReq.setBalance(tradeInfoReq.getBalance() + (usd_eth_value * amount));
 
 				NtsUserTraderEntity tradeInfoAfterUpdate = ntsUserTraderRepository.save(tradeInfoReq);
 				System.out.println(new Gson().toJson(tradeInfoAfterUpdate));
@@ -264,7 +265,9 @@ public class NtsMoneyServiceImpl implements NtsMoneyService {
 			save_req_2.setTransDesc("Transfer money from NTS Eth wallet ->  fiat currency wallet");
 			// long number = (long) Math.floor(Math.random() * 9_000_000_000L) +
 			// 1_000_000_000L;
-			save_req_2.setPaymentAddress("Amount transfered to fiat currency wallet");
+			save_req_2.setPaymentAddress("Amount: " + (usd_eth_value * amount)
+					+ "$ transfered to fiat currency wallet from the eth wallet with the EthAddress: "
+					+ tradeInfo.get().getEthereumAddress());
 			save_req_2 = ntsMoneyTransactionHistoryRepo.save(save_req_2);
 			// System.out.println(new Gson().toJson(save_req_2));
 
@@ -289,7 +292,7 @@ public class NtsMoneyServiceImpl implements NtsMoneyService {
 			double usd_eth_value = ethUsdService.getTheUsdValue();
 			if (!tradeInfo.isEmpty()) {
 				NtsUserTraderEntity tradeInfoReq = tradeInfo.get();
-				tradeInfoReq.setEthBalance(tradeInfoReq.getEthBalance() + amount / usd_eth_value);
+				tradeInfoReq.setEthBalance(tradeInfoReq.getEthBalance() + (amount / usd_eth_value));
 				NtsUserTraderEntity tradeInfoAfterUpdate = ntsUserTraderRepository.save(tradeInfoReq);
 				System.out.println(new Gson().toJson(tradeInfoAfterUpdate));
 
@@ -342,6 +345,7 @@ public class NtsMoneyServiceImpl implements NtsMoneyService {
 	@Override
 	public ServerStatusResponsePojo debitMoneyForEthmWallet(int clientId, double amount) {
 		ServerStatusResponsePojo serverRes = new ServerStatusResponsePojo();
+		double usd_eth_value = ethUsdService.getTheUsdValue();
 		try {
 			Optional<NtsUserTraderEntity> tradeInfo = ntsUserTraderRepository.findById(clientId);
 
@@ -369,24 +373,21 @@ public class NtsMoneyServiceImpl implements NtsMoneyService {
 			save_req = ntsTransactionHistoryRepo.save(save_req);
 
 			System.out.println(new Gson().toJson(save_req));
-//			System.out.println(LocalDateTime.now());
-//			System.out.println(new Gson().toJson(new Date(new java.util.Date().getTime())));
-
 			NtsMoneyTransactionHistory save_req_2 = new NtsMoneyTransactionHistory();
 
 			save_req_2.setTransactionId(save_req.getTransactionId());
 			save_req_2.setAmount(amount);
-			save_req_2.setEthUsdValue(ethUsdService.getTheUsdValue());
+			save_req_2.setEthUsdValue(usd_eth_value);
 			save_req_2.setMoneyTransactionType("Debit");
-			save_req_2.setTransDesc("Debit money from NTS fiat currency wallet -> BOFA");
+			save_req_2.setTransDesc("Debit money from NTS Eth wallet -> BOFA");
 			long number = (long) Math.floor(Math.random() * 9_000_000_000L) + 1_000_000_000L;
-			save_req_2.setPaymentAddress("Amount credit to BOFA Account number: " + number);
+			save_req_2.setPaymentAddress("Amount: " + amount * usd_eth_value + "$ credit to BOFA Account number: "
+					+ number + " from the Eth wallet with EthAddress: " + tradeInfo.get().getEthereumAddress());
 			save_req_2 = ntsMoneyTransactionHistoryRepo.save(save_req_2);
-			// System.out.println(new Gson().toJson(save_req_2));
 
 		} catch (Exception e) {
 			log.error("Exception occured while updating the balance" + e.getMessage());
-			serverRes.setErrorMessage("Error occured at NtsMoneyServiceImpl.debitMoneyFormWallet");
+			serverRes.setErrorMessage("Error occured at NtsMoneyServiceImpl.debitMoneyForEthmWallet");
 			serverRes.setResponseCode(500);
 			serverRes.setSuccess(false);
 			return serverRes;
