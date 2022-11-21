@@ -1,6 +1,8 @@
 package com.utd.nts.entity;
 
 import java.io.Serializable;
+import java.sql.Date;
+import java.sql.Time;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,6 +26,9 @@ public class NtsNftEntity implements Serializable {
 	@Column(name = "token_id")
 	String tokenId;
 
+	@Column(name = "client_id")
+	int clientId;
+
 	@Column(name = "contract_ethereum_address")
 	String contractEthereumAddress;
 
@@ -35,6 +40,15 @@ public class NtsNftEntity implements Serializable {
 
 	@Column(name = "eth_price")
 	double ethPrice;
+
+	@Column(name = "last_modified_date")
+	Date lastModifiedDate;
+
+	@Column(name = "last_modified_time")
+	Time lastModifiedTime;
+
+	@Column(name = "is_open_for_trade")
+	boolean isOpenForTrade;
 
 	public NtsNftEntity() {
 		super();
@@ -90,10 +104,44 @@ public class NtsNftEntity implements Serializable {
 		this.ethPrice = ethPrice;
 	}
 
+	public int getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(int clientId) {
+		this.clientId = clientId;
+	}
+
+	public Date getLastModifiedDate() {
+		return lastModifiedDate;
+	}
+
+	public void setLastModifiedDate(Date lastModifiedDate) {
+		this.lastModifiedDate = lastModifiedDate;
+	}
+
+	public Time getLastModifiedTime() {
+		return lastModifiedTime;
+	}
+
+	public void setLastModifiedTime(Time lastModifiedTime) {
+		this.lastModifiedTime = lastModifiedTime;
+	}
+
+	public boolean isOpenForTrade() {
+		return isOpenForTrade;
+	}
+
+	public void setOpenForTrade(boolean isOpenForTrade) {
+		this.isOpenForTrade = isOpenForTrade;
+	}
+
 	@Override
 	public String toString() {
-		return "NtsNftEntity [tokenId=" + tokenId + ", contractEthereumAddress=" + contractEthereumAddress + ", name="
-				+ name + ", description=" + description + ", ethPrice=" + ethPrice + "]";
+		return "NtsNftEntity [tokenId=" + tokenId + ", clientId=" + clientId + ", contractEthereumAddress="
+				+ contractEthereumAddress + ", name=" + name + ", description=" + description + ", ethPrice=" + ethPrice
+				+ ", lastModifiedDate=" + lastModifiedDate + ", lastModifiedTime=" + lastModifiedTime
+				+ ", isOpenForTrade=" + isOpenForTrade + "]";
 	}
 
 }
