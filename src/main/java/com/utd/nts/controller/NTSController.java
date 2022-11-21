@@ -13,7 +13,6 @@ import com.utd.nts.common.pojo.ServerStatusResponsePojo;
 import com.utd.nts.reqres.pojo.NFTRes;
 import com.utd.nts.reqres.pojo.NFTsRes;
 import com.utd.nts.reqres.pojo.NewUserRequest;
-import com.utd.nts.reqres.pojo.NtsNftOwnsRes;
 import com.utd.nts.reqres.pojo.NtsTradeUserResponse;
 import com.utd.nts.reqres.pojo.NtsUserResponse;
 import com.utd.nts.service.NFTService;
@@ -66,12 +65,12 @@ public class NTSController {
 		return nFTService.getAllNtfs();
 	}
 
-	@GetMapping("/nft")
+	@GetMapping("/v1/nft")
 	public NFTRes getNftByTokenId(@RequestParam String tokenId) {
 		return nFTService.getNftByTokenId(tokenId);
 	}
 
-	@GetMapping("/v1/nft")
+	@GetMapping("/v2/nft")
 	public NFTsRes getAllNftsByContractEthereumAddress(@RequestParam String contractEthereumAddress) {
 		return nFTService.getAllNtsWithContractEthereumAddress(contractEthereumAddress);
 	}
@@ -83,12 +82,12 @@ public class NTSController {
 	}
 
 	@GetMapping("/get/nft")
-	public NtsNftOwnsRes getAllNftsWithTheClientId(@RequestParam int clientId) {
+	public NFTsRes getAllNftsWithTheClientId(@RequestParam int clientId) {
 		return nFTService.getAllNftsWithTheClientId(clientId);
 	}
 
 	@GetMapping("/get/trade/nft")
-	public NtsNftOwnsRes getAllNftsExcludingClientId(@RequestParam int clientId) {
+	public NFTsRes getAllNftsExcludingClientId(@RequestParam int clientId) {
 		return nFTService.getAllNftsWithExcludingTheClientId(clientId);
 	}
 
@@ -128,4 +127,8 @@ public class NTSController {
 		return ntsMoneyService.debitMoneyForEthmWallet(clientId, amount);
 	}
 
+	/**
+	 * Trade Transaction API's
+	 */
+	
 }
