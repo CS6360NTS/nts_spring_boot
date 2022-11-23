@@ -12,9 +12,9 @@ This is a Spring boot application, created to develop the secured API's for NTS 
 
 1. Create your own branch eg: develop/navaneeth.
 2. Clone from it.
-3. Create a local db with name nts_db 
-4. Update your local user name and password in application.properties file (Don't push this changes to remote github)
-5. Do maven clean install(if maven build, goal shoud be "clean install"). 
+3. Run the db_setup.sql script in your local MySql instance. 
+4. Update your local user name, password and spring.datasource.url=jdbc:mysql://localhost:3306/nts_db in application.properties file (Don't push this changes to remote github)
+5. Do maven clean install (Use maven build, goal shoud be "clean install"). 
 6. Up the server.
 7. Hit localhost:8080/nts/demo (To test the installation)
 
