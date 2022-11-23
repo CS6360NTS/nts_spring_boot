@@ -2,6 +2,7 @@ package com.utd.nts.entity;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Time;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,18 +41,22 @@ public class NtsTransactionHistory implements Serializable {
 	@Column(name = "transaction_date")
 	Date transaction_date;
 
+	@Column(name = "transaction_time")
+	Time transactionTime;
+
 	public NtsTransactionHistory() {
 		super();
 	}
 
 	public NtsTransactionHistory(int transactionId, String transactionType, int client_id, String transactionStatus,
-			Date transaction_date) {
+			Date transaction_date, Time transactionTime) {
 		super();
 		this.transactionId = transactionId;
 		this.transactionType = transactionType;
 		this.client_id = client_id;
 		this.transactionStatus = transactionStatus;
 		this.transaction_date = transaction_date;
+		this.transactionTime = transactionTime;
 	}
 
 	public int getTransactionId() {
@@ -94,11 +99,19 @@ public class NtsTransactionHistory implements Serializable {
 		this.transaction_date = transaction_date;
 	}
 
+	public Time getTransactionTime() {
+		return transactionTime;
+	}
+
+	public void setTransactionTime(Time transactionTime) {
+		this.transactionTime = transactionTime;
+	}
+
 	@Override
 	public String toString() {
 		return "NtsTransactionHistory [transactionId=" + transactionId + ", transactionType=" + transactionType
 				+ ", client_id=" + client_id + ", transactionStatus=" + transactionStatus + ", transaction_date="
-				+ transaction_date + "]";
+				+ transaction_date + ", transactionTime=" + transactionTime + "]";
 	}
 
 }

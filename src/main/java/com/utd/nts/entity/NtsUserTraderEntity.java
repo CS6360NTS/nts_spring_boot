@@ -37,18 +37,22 @@ public class NtsUserTraderEntity implements Serializable {
 	@Column(name = "trader_level")
 	String traderLevel;
 
+	@Column(name = "eth_balance")
+	double ethBalance;
+
 	public NtsUserTraderEntity() {
 		super();
 	}
 
 	public NtsUserTraderEntity(int clientId, boolean isActive, String ethereumAddress, double balance,
-			String traderLevel) {
+			String traderLevel, double ethBalance) {
 		super();
 		this.clientId = clientId;
 		this.isActive = isActive;
 		this.ethereumAddress = ethereumAddress;
 		this.balance = balance;
 		this.traderLevel = traderLevel;
+		this.ethBalance = ethBalance;
 	}
 
 	public int getClientId() {
@@ -91,9 +95,18 @@ public class NtsUserTraderEntity implements Serializable {
 		this.traderLevel = traderLevel;
 	}
 
+	public double getEthBalance() {
+		return ethBalance;
+	}
+
+	public void setEthBalance(double d) {
+		this.ethBalance = d;
+	}
+
 	@Override
 	public String toString() {
 		return "NtsUserTraderEntity [clientId=" + clientId + ", isActive=" + isActive + ", ethereumAddress="
-				+ ethereumAddress + ", balance=" + balance + ", traderLevel=" + traderLevel + "]";
+				+ ethereumAddress + ", balance=" + balance + ", traderLevel=" + traderLevel + ", ethBalance="
+				+ ethBalance + "]";
 	}
 }
