@@ -1,7 +1,11 @@
 package com.utd.nts.service.impl;
 
+import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -9,13 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import com.utd.nts.common.pojo.ServerStatusResponsePojo;
 import com.utd.nts.entity.NtsNftEntity;
-import com.utd.nts.entity.NtsTraderOwnsNft;
 import com.utd.nts.repository.NftRepo;
-import com.utd.nts.repository.NtsTraderOwnsNftRepo;
 import com.utd.nts.reqres.pojo.NFTRes;
 import com.utd.nts.reqres.pojo.NFTsRes;
 import com.utd.nts.reqres.pojo.NtsTradeUserResponse;
@@ -32,9 +33,6 @@ public class NFTServiceImpl implements NFTService {
 	public static final Logger log = LoggerFactory.getLogger(NFTServiceImpl.class);
 	@Autowired
 	private NftRepo nftRepo;
-
-	@Autowired
-	private NtsTraderOwnsNftRepo ntsTraderOwnsNftRepo;
 
 	@Autowired
 	private UserService userService;
@@ -131,11 +129,12 @@ public class NFTServiceImpl implements NFTService {
 			req.setName(name);
 			req.setDescription("Copy " + copy);
 			req.setEthPrice(ethPrice);
+			req.setClientId(clientId);
+			Date d = java.sql.Timestamp.valueOf(LocalDateTime.now());
+			req.setLastModifiedDate(new java.sql.Date(d.getTime()));
+			req.setLastModifiedTime(Time.valueOf(LocalTime.now()));
+			req.setOpenForTrade(true);
 			req = nftRepo.save(req);
-			// System.out.println(new Gson().toJson(req));
-
-			// Creator will be the owner of the NFT's
-			addNftOwnership(req, clientId);
 
 		} catch (Exception e) {
 			log.error("Exception occured while saving the NFTs" + e.getMessage());
@@ -143,18 +142,6 @@ public class NFTServiceImpl implements NFTService {
 		}
 		return req;
 
-	}
-
-	private void addNftOwnership(NtsNftEntity req, int clientId) throws Exception {
-		NtsTraderOwnsNft db_save_req = new NtsTraderOwnsNft();
-		try {
-			db_save_req.setClientId(clientId);
-			db_save_req.setTokenId(req.getTokenId());
-			ntsTraderOwnsNftRepo.save(db_save_req);
-		} catch (Exception e) {
-			log.error("Exception occured while saving the NftOwnership" + e.getMessage());
-			throw e;
-		}
 	}
 
 	@Override
@@ -174,6 +161,48 @@ public class NFTServiceImpl implements NFTService {
 			res.setServerResponse(serverRes);
 			return res;
 		}
+		serverRes.setResponseCode(200);
+		serverRes.setSuccess(true);
+		res.setServerResponse(serverRes);
+		return res;
+	}
+
+	@Override
+	public NFTsRes getAllNftsWithTheClientId(int clientId) {
+		NFTsRes res = new NFTsRes();
+		ServerStatusResponsePojo serverRes = new ServerStatusResponsePojo();
+		try {
+			res.setNfts(nftRepo.findAllNftsByClientId(clientId));
+		} catch (Exception e) {
+			log.error("Exception occured while fetching the NFT's form the DB" + e.getMessage());
+			serverRes.setErrorMessage("Error occured at NFTServiceImpl.getAllNftsWithTheClientId");
+			serverRes.setResponseCode(500);
+			serverRes.setSuccess(false);
+			res.setServerResponse(serverRes);
+			return res;
+		}
+		serverRes.setErrorMessage("SUCCESS");
+		serverRes.setResponseCode(200);
+		serverRes.setSuccess(true);
+		res.setServerResponse(serverRes);
+		return res;
+	}
+
+	@Override
+	public NFTsRes getAllNftsWithExcludingTheClientId(int clientId) {
+		NFTsRes res = new NFTsRes();
+		ServerStatusResponsePojo serverRes = new ServerStatusResponsePojo();
+		try {
+			res.setNfts(nftRepo.findAllNftsByExcludingClientId(clientId));
+		} catch (Exception e) {
+			log.error("Exception occured while fetching the NFT's form the DB" + e.getMessage());
+			serverRes.setErrorMessage("Error occured at NFTServiceImpl.getAllNftsWithTheClientId");
+			serverRes.setResponseCode(500);
+			serverRes.setSuccess(false);
+			res.setServerResponse(serverRes);
+			return res;
+		}
+		serverRes.setErrorMessage("SUCCESS");
 		serverRes.setResponseCode(200);
 		serverRes.setSuccess(true);
 		res.setServerResponse(serverRes);

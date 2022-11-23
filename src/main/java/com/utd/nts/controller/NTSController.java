@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.utd.nts.common.pojo.ServerStatusResponsePojo;
 import com.utd.nts.reqres.pojo.NFTRes;
 import com.utd.nts.reqres.pojo.NFTsRes;
 import com.utd.nts.reqres.pojo.NewUserRequest;
 import com.utd.nts.reqres.pojo.NtsTradeUserResponse;
 import com.utd.nts.reqres.pojo.NtsUserResponse;
 import com.utd.nts.service.NFTService;
+import com.utd.nts.service.NtsMoneyService;
 import com.utd.nts.service.UserService;
 
 @RestController
@@ -26,6 +28,9 @@ public class NTSController {
 
 	@Autowired
 	NFTService nFTService;
+
+	@Autowired
+	NtsMoneyService ntsMoneyService;
 
 	/** User API's **/
 	@GetMapping("/demo")
@@ -45,6 +50,7 @@ public class NTSController {
 
 	@PostMapping(path = "/addUser", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public NtsTradeUserResponse addUser(@RequestBody NewUserRequest user) {
+		System.out.println(user.toString());
 		return userService.addUser(user);
 	}
 
@@ -59,12 +65,12 @@ public class NTSController {
 		return nFTService.getAllNtfs();
 	}
 
-	@GetMapping("/nft")
+	@GetMapping("/v1/nft")
 	public NFTRes getNftByTokenId(@RequestParam String tokenId) {
 		return nFTService.getNftByTokenId(tokenId);
 	}
 
-	@GetMapping("/v1/nft")
+	@GetMapping("/v2/nft")
 	public NFTsRes getAllNftsByContractEthereumAddress(@RequestParam String contractEthereumAddress) {
 		return nFTService.getAllNtsWithContractEthereumAddress(contractEthereumAddress);
 	}
@@ -74,4 +80,55 @@ public class NTSController {
 			@RequestParam int noOfCopies) {
 		return nFTService.createNft(clientId, name, ethPrice, noOfCopies);
 	}
+
+	@GetMapping("/get/nft")
+	public NFTsRes getAllNftsWithTheClientId(@RequestParam int clientId) {
+		return nFTService.getAllNftsWithTheClientId(clientId);
+	}
+
+	@GetMapping("/get/trade/nft")
+	public NFTsRes getAllNftsExcludingClientId(@RequestParam int clientId) {
+		return nFTService.getAllNftsWithExcludingTheClientId(clientId);
+	}
+
+	/**
+	 * Money Transaction API's
+	 */
+	@GetMapping("/addMoneyFromBofa")
+	public ServerStatusResponsePojo addMoneyFromBofa(@RequestParam int clientId, @RequestParam double amount) {
+		return ntsMoneyService.addMoneyFromBofa(clientId, amount);
+	}
+
+	@GetMapping("/debitMoneyFromWallet")
+	public ServerStatusResponsePojo debitMoneyFormWallet(@RequestParam int clientId, @RequestParam double amount) {
+		return ntsMoneyService.debitMoneyFormWallet(clientId, amount);
+
+	}
+
+	@GetMapping("/transferWalletAmountToEth")
+	public ServerStatusResponsePojo transferWalletAmountToEth(@RequestParam int clientId, @RequestParam double amount) {
+		return ntsMoneyService.transferWalletAmountToEth(clientId, amount);
+	}
+
+	@GetMapping("/transferWalletEthAmountToFait")
+	public ServerStatusResponsePojo transferWalletEthAmountToFait(@RequestParam int clientId,
+			@RequestParam double amount) {
+		return ntsMoneyService.transferWalletEthAmountToFait(clientId, amount);
+	}
+
+	@GetMapping("/addMoneyFromBofaToEthWallet")
+	public ServerStatusResponsePojo addMoneyFromBofaToEthWallet(@RequestParam int clientId,
+			@RequestParam double amount) {
+		return ntsMoneyService.addMoneyFromBofaToEthWallet(clientId, amount);
+	}
+
+	@GetMapping("/debitMoneyForEthmWallet")
+	public ServerStatusResponsePojo debitMoneyFormEthWallet(@RequestParam int clientId, @RequestParam double amount) {
+		return ntsMoneyService.debitMoneyForEthmWallet(clientId, amount);
+	}
+
+	/**
+	 * Trade Transaction API's
+	 */
+	
 }
