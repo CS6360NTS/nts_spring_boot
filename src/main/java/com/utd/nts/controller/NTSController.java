@@ -13,10 +13,12 @@ import com.utd.nts.common.pojo.ServerStatusResponsePojo;
 import com.utd.nts.reqres.pojo.NFTRes;
 import com.utd.nts.reqres.pojo.NFTsRes;
 import com.utd.nts.reqres.pojo.NewUserRequest;
+import com.utd.nts.reqres.pojo.NtsNftTradeReq;
 import com.utd.nts.reqres.pojo.NtsTradeUserResponse;
 import com.utd.nts.reqres.pojo.NtsUserResponse;
 import com.utd.nts.service.NFTService;
 import com.utd.nts.service.NtsMoneyService;
+import com.utd.nts.service.NtsNftTradeService;
 import com.utd.nts.service.UserService;
 
 @RestController
@@ -31,6 +33,9 @@ public class NTSController {
 
 	@Autowired
 	NtsMoneyService ntsMoneyService;
+	
+	@Autowired
+	NtsNftTradeService ntsNftTradeService;
 
 	/** User API's **/
 	@GetMapping("/demo")
@@ -130,5 +135,8 @@ public class NTSController {
 	/**
 	 * Trade Transaction API's
 	 */
-	
+	@PostMapping(path = "/performTrade", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ServerStatusResponsePojo performTrade(@RequestBody NtsNftTradeReq req) {
+		return ntsNftTradeService.validateAndCompleteTheTradeTransaction(req);
+	}
 }
