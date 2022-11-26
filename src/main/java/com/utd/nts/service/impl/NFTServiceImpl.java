@@ -130,6 +130,7 @@ public class NFTServiceImpl implements NFTService {
 			req.setDescription("Copy " + copy);
 			req.setEthPrice(ethPrice);
 			req.setClientId(clientId);
+			req.setLastClientId(0);
 			Date d = java.sql.Timestamp.valueOf(LocalDateTime.now());
 			req.setLastModifiedDate(new java.sql.Date(d.getTime()));
 			req.setLastModifiedTime(Time.valueOf(LocalTime.now()));

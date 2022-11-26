@@ -47,6 +47,9 @@ public class NtsNftEntity implements Serializable {
 	@Column(name = "last_modified_time")
 	Time lastModifiedTime;
 
+	@Column(name = "last_client_id")
+	int lastClientId;
+
 	@Column(name = "is_open_for_trade")
 	boolean isOpenForTrade;
 
@@ -54,14 +57,19 @@ public class NtsNftEntity implements Serializable {
 		super();
 	}
 
-	public NtsNftEntity(String tokenId, String contractEthereumAddress, String name, String description,
-			double ethPrice) {
+	public NtsNftEntity(String tokenId, int clientId, String contractEthereumAddress, String name, String description,
+			double ethPrice, Date lastModifiedDate, Time lastModifiedTime, int lastClientId, boolean isOpenForTrade) {
 		super();
 		this.tokenId = tokenId;
+		this.clientId = clientId;
 		this.contractEthereumAddress = contractEthereumAddress;
 		this.name = name;
 		this.description = description;
 		this.ethPrice = ethPrice;
+		this.lastModifiedDate = lastModifiedDate;
+		this.lastModifiedTime = lastModifiedTime;
+		this.lastClientId = lastClientId;
+		this.isOpenForTrade = isOpenForTrade;
 	}
 
 	public String getTokenId() {
@@ -136,12 +144,20 @@ public class NtsNftEntity implements Serializable {
 		this.isOpenForTrade = isOpenForTrade;
 	}
 
+	public int getLastClientId() {
+		return lastClientId;
+	}
+
+	public void setLastClientId(int lastClientId) {
+		this.lastClientId = lastClientId;
+	}
+
 	@Override
 	public String toString() {
 		return "NtsNftEntity [tokenId=" + tokenId + ", clientId=" + clientId + ", contractEthereumAddress="
 				+ contractEthereumAddress + ", name=" + name + ", description=" + description + ", ethPrice=" + ethPrice
 				+ ", lastModifiedDate=" + lastModifiedDate + ", lastModifiedTime=" + lastModifiedTime
-				+ ", isOpenForTrade=" + isOpenForTrade + "]";
+				+ ", lastClientId=" + lastClientId + ", isOpenForTrade=" + isOpenForTrade + "]";
 	}
 
 }
