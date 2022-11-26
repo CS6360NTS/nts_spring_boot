@@ -33,7 +33,7 @@ public class NtsTransactionHistory implements Serializable {
 	String transactionType;
 
 	@Column(name = "client_id")
-	int client_id;
+	int clientId;
 
 	@Column(name = "transaction_status")
 	String transactionStatus;
@@ -53,7 +53,7 @@ public class NtsTransactionHistory implements Serializable {
 		super();
 		this.transactionId = transactionId;
 		this.transactionType = transactionType;
-		this.client_id = client_id;
+		this.clientId = client_id;
 		this.transactionStatus = transactionStatus;
 		this.transaction_date = transaction_date;
 		this.transactionTime = transactionTime;
@@ -76,11 +76,11 @@ public class NtsTransactionHistory implements Serializable {
 	}
 
 	public int getClient_id() {
-		return client_id;
+		return clientId;
 	}
 
 	public void setClient_id(int client_id) {
-		this.client_id = client_id;
+		this.clientId = client_id;
 	}
 
 	public String getTransactionStatus() {
@@ -110,7 +110,7 @@ public class NtsTransactionHistory implements Serializable {
 	@Override
 	public String toString() {
 		return "NtsTransactionHistory [transactionId=" + transactionId + ", transactionType=" + transactionType
-				+ ", client_id=" + client_id + ", transactionStatus=" + transactionStatus + ", transaction_date="
+				+ ", clientId=" + clientId + ", transactionStatus=" + transactionStatus + ", transaction_date="
 				+ transaction_date + ", transactionTime=" + transactionTime + "]";
 	}
 
