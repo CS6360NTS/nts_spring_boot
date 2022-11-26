@@ -139,11 +139,12 @@ public class NtsNftTradeServiceImpl implements NtsNftTradeService {
 						.setEthBalance(sellerTraderInfoSaveReq.getEthBalance() + nts_with_tokenId.get().getEthPrice());
 				// NFT attribute value changes
 				NtsNftEntity current_nft = nts_with_tokenId.get();
+				current_nft.setLastClientId(current_nft.getClientId());
 				current_nft.setClientId(req.getClientId());
 				Date d = java.sql.Timestamp.valueOf(LocalDateTime.now());
 				current_nft.setLastModifiedDate(new java.sql.Date(d.getTime()));
 				current_nft.setLastModifiedTime(Time.valueOf(LocalTime.now()));
-				if (buyerTraderInfo.getTraderLevel().toLowerCase() == "silver") {
+				if (buyerTraderInfo.getTraderLevel().equals("silver")) {
 					commisionAmmount = (req.getCommissionType().toLowerCase().equals("eth"))
 							? nts_with_tokenId.get().getEthPrice() * 0.15
 							: nts_with_tokenId.get().getEthPrice() * 0.15 * ethUsdService.getTheUsdValue();
@@ -184,6 +185,98 @@ public class NtsNftTradeServiceImpl implements NtsNftTradeService {
 			throw e;
 		}
 		return buyerTraderInfo;
+	}
+
+	@Override
+	public ServerStatusResponsePojo validateAndCancelTheTransaction(int transactionId) {
+		ServerStatusResponsePojo serverRes = new ServerStatusResponsePojo();
+
+		try {
+			Optional<NtsTransactionHistory> thres = ntsTransactionHistoryRepo.findById(transactionId);
+
+			if (thres.isEmpty()) {
+				serverRes.setErrorMessage("Could not find the mentioned transactionId in DB");
+				serverRes.setResponseCode(200);
+				serverRes.setSuccess(false);
+				return serverRes;
+			}
+			Date d = java.sql.Timestamp.valueOf(LocalDateTime.now());
+			java.sql.Date currentDate = new java.sql.Date(d.getTime());
+			System.out.println(Time.valueOf(LocalTime.now()));
+			System.out.println(thres.get().getTransactionTime());
+			@SuppressWarnings("deprecation")
+			int hourDiff = Time.valueOf(LocalTime.now()).getHours() - thres.get().getTransactionTime().getHours();
+			@SuppressWarnings("deprecation")
+			int minDiff = Time.valueOf(LocalTime.now()).getMinutes() - thres.get().getTransactionTime().getMinutes();
+			System.out.println(hourDiff);
+			System.out.println(minDiff);
+			if (thres.get().getTransaction_date().toString().compareTo(currentDate.toString()) != 0 || hourDiff != 0
+					|| minDiff >= 15) {
+				serverRes.setErrorMessage("Can't revert this transaction as it's been morethan 15 minutes");
+				serverRes.setResponseCode(200);
+				serverRes.setSuccess(false);
+				return serverRes;
+			}
+			NtsTransactionHistory thres_save_req = thres.get();
+			thres_save_req.setTransactionStatus("Cancelled");
+			ntsTransactionHistoryRepo.save(thres_save_req);
+
+			Optional<NtsUserTraderEntity> curentTraderInfo = ntsUserTraderRepository
+					.findById(thres.get().getClient_id());
+			if (curentTraderInfo.isEmpty()) {
+				serverRes.setErrorMessage("Could not find the mentioned client Id in DB");
+				serverRes.setResponseCode(200);
+				serverRes.setSuccess(false);
+				return serverRes;
+			}
+			NtsUserTraderEntity curentTraderInfoSaveRequest = curentTraderInfo.get();
+			List<NtsTradeTransactionHistory> res = ntsTradeTransactionHistoryRepo.findByTransactionId(transactionId);
+			for (NtsTradeTransactionHistory x : res) {
+				curentTraderInfoSaveRequest = reverseTheTransaction(x, curentTraderInfoSaveRequest);
+			}
+		} catch (Exception e) {
+			serverRes.setErrorMessage(e.getMessage());
+			serverRes.setResponseCode(500);
+			serverRes.setSuccess(false);
+			return serverRes;
+		}
+
+		serverRes.setErrorMessage("SUCCESS");
+		serverRes.setResponseCode(200);
+		serverRes.setSuccess(true);
+		return serverRes;
+	}
+
+	NtsUserTraderEntity reverseTheTransaction(NtsTradeTransactionHistory transRecord,
+			NtsUserTraderEntity curentTraderInfoSaveRequest) throws Exception {
+		try {
+			Optional<NtsNftEntity> nts_with_tokenId = nftRepo.findById(transRecord.getPrimaryKey().getNftTockenId());
+			if (nts_with_tokenId.isEmpty()) {
+				return curentTraderInfoSaveRequest;
+			}
+			Optional<NtsUserTraderEntity> prevTraderInfo = ntsUserTraderRepository
+					.findById(nts_with_tokenId.get().getLastClientId());
+			if (prevTraderInfo.isEmpty()) {
+				return curentTraderInfoSaveRequest;
+			}
+			NtsUserTraderEntity prevTraderInfoSaveRequest = prevTraderInfo.get();
+			// Finance settlement
+			prevTraderInfoSaveRequest
+					.setEthBalance(prevTraderInfoSaveRequest.getEthBalance() - transRecord.getEthereumValue());
+			curentTraderInfoSaveRequest
+					.setEthBalance(prevTraderInfoSaveRequest.getEthBalance() + transRecord.getEthereumValue());
+			NtsNftEntity nts_with_token_Save_Req = nts_with_tokenId.get();
+			nts_with_token_Save_Req.setClientId(nts_with_token_Save_Req.getLastClientId());
+			nts_with_token_Save_Req.setLastClientId(curentTraderInfoSaveRequest.getClientId());
+
+			// DB updates
+			curentTraderInfoSaveRequest = ntsUserTraderRepository.save(curentTraderInfoSaveRequest);
+			ntsUserTraderRepository.save(prevTraderInfoSaveRequest);
+
+		} catch (Exception e) {
+			throw e;
+		}
+		return curentTraderInfoSaveRequest;
 	}
 
 }

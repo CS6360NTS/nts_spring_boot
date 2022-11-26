@@ -25,6 +25,7 @@ import com.utd.nts.reqres.pojo.NewUserRequest;
 import com.utd.nts.reqres.pojo.NtsNftTradeReq;
 import com.utd.nts.reqres.pojo.NtsTradeUserResponse;
 import com.utd.nts.reqres.pojo.NtsUserResponse;
+import com.utd.nts.service.EthUsdService;
 import com.utd.nts.service.NFTService;
 import com.utd.nts.service.NtsMoneyService;
 import com.utd.nts.service.NtsNftTradeService;
@@ -55,6 +56,9 @@ public class NTSController {
 
 	@Autowired
 	NtsMoneyTransactionHistoryRepo ntsMoneyTransactionHistoryRepo;
+
+	@Autowired
+	EthUsdService ethUsdService;
 
 	/** User API's **/
 	@GetMapping("/demo")
@@ -159,6 +163,11 @@ public class NTSController {
 		return ntsNftTradeService.validateAndCompleteTheTradeTransaction(req);
 	}
 
+	@GetMapping("getCurrentEthValue")
+	public double getCurrentEthValue() {
+		return ethUsdService.getTheUsdValue();
+	}
+
 	/**
 	 * 
 	 * Transaction API's
@@ -181,6 +190,11 @@ public class NTSController {
 	@GetMapping("/getAllMoneyTransactionsByTransactionId")
 	NtsMoneyTransactionHistory getMoreDetailsAboutMoneyTransaction(@RequestParam int transactionId) {
 		return ntsMoneyTransactionHistoryRepo.findByTransactionId(transactionId);
+	}
+
+	@GetMapping("/validateAndCancelTheTransaction")
+	ServerStatusResponsePojo validateAndCancelTheTransaction(@RequestParam int transactionId) {
+		return ntsNftTradeService.validateAndCancelTheTransaction(transactionId);
 	}
 
 	/**

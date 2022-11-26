@@ -11,4 +11,6 @@ import com.utd.nts.reqres.pojo.NtsNftTradeReq;
 public interface NtsNftTradeService {
 
 	public abstract ServerStatusResponsePojo validateAndCompleteTheTradeTransaction(NtsNftTradeReq req);
+	
+	public abstract ServerStatusResponsePojo validateAndCancelTheTransaction(int transactionId);
 }
