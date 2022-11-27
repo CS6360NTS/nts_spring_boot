@@ -95,11 +95,7 @@ Process to check in:
 Entity–Relationship Design
 ----
 
-<a href="#" onclick='console.log(`div id: template, filename: images/diagram/NFT.drawio.html`)'>Click here</a>
-
-[Click here](images/diagram/NFT.drawio.html)
-
-[![ER Diagram](images/diagram/diagram.jpg)](images/diagram/NFT.drawio.pdf)
+[![ER Diagram](images/diagram/NFT.drawio.png)](images/diagram/NFT.drawio.pdf)
 
 User Management API’s
 ----
