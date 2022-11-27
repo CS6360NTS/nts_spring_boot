@@ -95,7 +95,7 @@ Process to check in:
 Entity–Relationship Design
 ----
 
-![ER Diagram](images/diagram/diagram.png)
+![ER Diagram](images/diagram/diagram.jpg)
 
 User Management API’s
 ----
