@@ -94,8 +94,10 @@ Process to check in:
 
 Entity–Relationship Design
 ----
+<a href="./images/diagram/NFT.drawio.html" target="_top">Click here</a>
 
-Click [here](images/diagram/NFT.drawio.html)
+[Click here](images/diagram/NFT.drawio.html)
+
 ![ER Diagram](images/diagram/diagram.jpg)
 
 User Management API’s
