@@ -148,12 +148,12 @@ Body_addUser:
 {
     "userInfo": {
         "firstName": "Christos",
-        "lastName": "C",
-        "emailId": "christos.v@gmail.com",
+        "lastName": "v",
+        "emailId": "christos@gmail.com",
         "phoneNumber": "6984756132",
         "cellPhoneNumber": "7259047234",
         "userType": "T",
-        "streetAddress": "West Renner Rd",
+        "streetAddress": "2203 Webster Rd",
         "city": "Plano",
         "state": "Texas",
         "zipCode": "75075",
