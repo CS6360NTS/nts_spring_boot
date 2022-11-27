@@ -95,7 +95,7 @@ Process to check in:
 Entity–Relationship Design
 ----
 
-![ER Diagram](images/diagram/NFT.drawio.png)
+![ER Diagram](images/diagram/diagram.png)
 
 User Management API’s
 ----
