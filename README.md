@@ -10,9 +10,9 @@ Project:
 
 Overview:
 
-Motivated by the recent popularity of non-fungible tokens (NFTs1), a good friend of yours would
+Motivated by the recent popularity of non-fungible tokens (NFTs), a good friend of yours would
 like to set up a local shop that can buy/sell NFTs for investors in Dallas based on Ethereum
-blockchain2. She asked your help to develop a web based NFT trading application. In particular,
+blockchain. She asked your help to develop a web based NFT trading application. In particular,
 she wants you to create convenient and easy-to-use software for NFT traders who are trying to
 buy and sell NFTs. To help your friend, you offer to develop a web based software system called
 NTS (NFT Transaction System) that leverage the relational DBMS technology for data storage and querying.
@@ -72,6 +72,26 @@ Useful Links:
 - [https://ethereum.org/en/nft/](https://ethereum.org/en/nft/)
 - [https://docs.cloud.coinbase.com/sign-in-with-coinbase/docs/api-prices](https://docs.cloud.coinbase.com/sign-in-with-coinbase/docs/api-prices)
 
+Software Requirements
+----
+
+1. Java: 17
+2. Maven: 3.8.6
+3. STS: 4(Recommend code editor, but mandatory)
+4. Git: latest version
+
+Process to check in:
+----
+
+1. Create your own branch eg: develop/navaneeth.
+2. Clone from it.
+3. Run the db_setup.sql script in your local MySql instance.
+4. Update your local user name, password and spring.datasource.url=jdbc:mysql://localhost:3306/nts_db in application.properties file (Don't push this changes to remote github)
+5. Do maven clean install (Use maven build, goal shoud be "clean install").
+6. Up the server.
+7. Hit localhost:8080/nts/demo (To test the installation)
+
+
 Entity–Relationship Design
 ----
 
@@ -80,27 +100,35 @@ Entity–Relationship Design
 User Management API’s
 ----
 
-| #   | URL                                                                                                                                                                                                                  | Type | Description                                                                                              |
-|-----|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------|----------------------------------------------------------------------------------------------------------|
-| 1   | [*localhost:8080/nts/users*](localhost:8080/nts/users)                                                                                                                                                       | GET  | Gets all the list of users and their details                                                             |
-| 2   | [*localhost:8080/nts/users?clientId=1*](localhost:8080/nts/users?clientId=1)                                                                                                                                 | GET  | Gets all the details of the user based on the Client ID                                                  |
-| 3   | [*localhost:8080/nts/addUsers*](localhost:8080/nts/addUsers)                                                                                                                                                 | POST | Adds a new user to the Database                                                                          |
-| 4   | [*localhost:8080/nts/nfts*](localhost:8080/nts/nfts)                                                                                                                                                         | GET  | Returns all the NFT's available                                                                          |
-| 5   | [*localhost:8080/nts/v1/nft?contractEthereumAddress=9a6eab44-5195-11ed-83af-004e01c09a92*](localhost:8080/nts/v1/nft?contractEthereumAddress=9a6eab44-5195-11ed-83af-004e01c09a92)                           | GET  | Returns all the NFT’s available with the contractEthereumAddress                                         |
-| 6   | [*localhost:8080/nts/v1/nft?contractEthereumAddress=9a6eab44-5195-11ed-83af-004e01c09a92*](localhost:8080/nts/v1/nft?contractEthereumAddress=9a6eab44-5195-11ed-83af-004e01c09a92)                           | GET  | Returns get the NFT available with the Token ID                                                          |
-| 7   | [*localhost:8080/nts/create/nfts?name=Navaneeths first c code&ethPrice=100&noOfCopies=3&clientId=1000*](localhost:8080/nts/create/nfts?name=Navaneeths first c code&ethPrice=100&noOfCopies=3&clientId=1000) | -    | Creates the NFT's (No.of copies and the amount can be specified) Ownership is also taken care implicity Client id verification is also taken care |
-| 8   | [*localhost:8080/nts/v1/nft?contractEthereumAddress=9a6eab44-5195-11ed-83af-004e01c09a92*](localhost:8080/nts/v1/nft?contractEthereumAddress=9a6eab44-5195-11ed-83af-004e01c09a92)                           | -    | Returns get the NFT available with the Token ID                                                          |
+| #  | URL                                                                                                                                                                                | Type | Description                                                                           |
+|----|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------|---------------------------------------------------------------------------------------|
+| 1  | [*localhost:8080/nts/user?clientId=1*](localhost:8080/nts/user?clientId=1)                                                                                                         | GET  | Returns all the information of the user based on the clientId                         |
+| 2  | [*localhost:8080/nts/users*](localhost:8080/nts/users)                                                                                                                             | GET  | Returns all the list of users and their details                                       |
+| 3  | [*localhost:8080/nts/addUser*](localhost:8080/nts/addUser)                                                                                                                         | POST | Adds a new user to the Database                                                       |
+| 4  | [*localhost:8080/nts/updateUser*](localhost:8080/nts/updateUser)                                                                                                                   | POST | Updates a user's details to the Database                                              |
+| 5  | [*localhost:8080/nts/nfts*](localhost:8080/nts/nfts)                                                                                                                               | GET  | Returns all the NFT's available                                                       |
+| 6  | [*localhost:8080/nts/v1/nft?contractEthereumAddress=9a6eab44-5195-11ed-83af-004e01c09a92*](localhost:8080/nts/v1/nft?contractEthereumAddress=9a6eab44-5195-11ed-83af-004e01c09a92) | GET  | Returns all the NFT’s available with the contractEthereumAddress                      |
+| 7  | [*localhost:8080/nts/v2/nft?contractEthereumAddress=9a6eab44-5195-11ed-83af-004e01c09a92*](localhost:8080/nts/v1/nft?contractEthereumAddress=9a6eab44-5195-11ed-83af-004e01c09a92) | GET  | Returns all the NFT’s available with the contractEthereumAddress                      |
+| 8  | [*localhost:8080/nts/v1/nft?contractEthereumAddress=9a6eab44-5195-11ed-83af-004e01c09a92*](localhost:8080/nts/v1/nft?contractEthereumAddress=9a6eab44-5195-11ed-83af-004e01c09a92) | GET  | Returns get the NFT available with the Token ID                                       |
+| 9  | [*localhost:8080/nts/create/nfts*](localhost:8080/nts/create/nfts)                                                                                                                 | GET  | Create a new NFT                                                                      | 
+| 10 | [*localhost:8080/nts/get/nft*](localhost:8080/nts/get/nft)                                                                                                                         | GET  | Get an NFT                                                                            |
+| 11 | [*localhost:8080/nts/get/trade/nft*](localhost:8080/nts/get/trade/nft)                                                                                                             | GET  | Fetch all the NFTS other than yours                                                   |
+| 12 | [*localhost:8080/nts/addMoneyFromBofa*](localhost:8080/nts/addMoneyFromBofa)                                                                                                       | GET  | Add Money to your account's balance in USD (Money)                                    |
+| 13 | [*localhost:8080/nts/debitMoneyFromWallet*](localhost:8080/nts/debitMoneyFromWallet)                                                                                               | GET  | Deposit money from the Wallet to your account                                         |
+| 14 | [*localhost:8080/nts/transferWalletAmountToEth*](localhost:8080/nts/transferWalletAmountToEth)                                                                                     | GET  | Buy Ethereum with your current balance in your wallet                                 |
+| 15 | [*localhost:8080/nts/transferWalletEthAmountToFait*](localhost:8080/nts/transferWalletEthAmountToFait)                                                                             | GET  | Convert Ethereum to fake currency and stores it in waller                             |
+| 16 | [*localhost:8080/nts/addMoneyFromBofaToEthWallet*](localhost:8080/nts/addMoneyFromBofaToEthWallet)                                                                                 | GET  | Buy Ethereum with your bank account (i.e. Bank of America)                            |
+| 17 | [*localhost:8080/nts/debitMoneyForEthmWallet*](localhost:8080/nts/debitMoneyForEthmWallet)                                                                                         | GET  | Transfer Ethereum to your bank account (i.e. Bank of America)                         |
+| 18 | [*localhost:8080/nts/getAllTransactions*](localhost:8080/nts/getAllTransactions)                                                                                                   | GET  | Get all the transactions                                                              |
+| 19 | [*localhost:8080/nts/getAllTransactionsByClientId?clientId=1000*](localhost:8080/nts/getAllTransactionsByClientId?clientId=1000)                                                   | GET  | Get all the transactions based on Client ID                                           |
+| 20 | [*localhost:8080/nts/getAllMoneyTransactionsByTransactionId?transactionId=5*](localhost:8080/nts/getAllMoneyTransactionsByTransactionId?transactionId=5)                           | GET  | Get all Money Transactions based on Transaction ID                                    |
+| 21 | [*localhost:8080/nts/performTrade*](localhost:8080/nts/performTrade)                                                                                                               | POST | Perform a Trade buying NFTs based on tokenIds. commisionType can be `fait` or `eth`   |
+| 22 | [*localhost:8080/nts/validateAndCancelTheTransaction?transactionId=7*](localhost:8080/nts/validateAndCancelTheTransaction?transactionId=7)                                         | GET  | Cancel the transaction based on the transaction ID if this happened within 15 minutes |
+| 23 | [*localhost:8080/nts/getAllTradeTransactionsByTransactionId?transactionId=7*](localhost:8080/nts/getAllTradeTransactionsByTransactionId?transactionId=7)                           | GET  | Get all the information are noted based on the transaction ID                         |
+| 24 | [*localhost:8080/nts/getManagerStatistics?startDate=2022-11-26&endDate=2022-11-26*](localhost:8080/nts/getManagerStatistics?startDate=2022-11-26&endDate=2022-11-26)               | GET  | Retrieve all the statistics based on the Date [`Start-Date` and `End-Date`]           |
 
 Note: When your server runs then replace **localhost:8080** with the new IP and Port, i.e. **34.66.65.153:8080**
 
-Setup Instructions
-----
-
-```
-git clone https://github.com/CS6360NTS/nts_ui
-cd nts_ui
-
-```
 
 Examples
 ----
@@ -108,6 +136,7 @@ Examples
 ```
 
 ```
+
 ```json
 {
     "customerList": [
@@ -184,4 +213,5 @@ Examples
 | [Harshavardhini Sridhar](harshavardhini.sridhar@utdallas.edu) | [harshavardhini.sridhar@utdallas.edu](harshavardhini.sridhar@utdallas.edu) | 
 | [Christos Vasileiou](christos.vasileiou@utdallas.edu)         | [christos.vasileiou@utdallas.edu](christos.vasileiou@utdallas.edu) |
 |  [Dibyanshi Singh](dibyanshi.singh@utdallas.edu) | [dibyanshi.singh@utdallas.edu](dibyanshi.singh@utdallas.edu) |
+
 
