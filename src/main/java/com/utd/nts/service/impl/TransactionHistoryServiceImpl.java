@@ -35,6 +35,9 @@ public class TransactionHistoryServiceImpl implements TransactionHistoryService 
 		res.setTradeTransactionCount(ntsTransactionHistoryRepo.getTradeTransactionCount(startDate, endDate, "Money"));
 		res.setEthCommissionAmount(ntsCommissionEntity.get().getEthCommisionAmount());
 		res.setFaitCommissionAmount(ntsCommissionEntity.get().getFiatCurrencyAmount());
+		res.setTradeTransactionSuccessCount(
+				ntsTransactionHistoryRepo.getCountOfType(startDate, endDate, "Trade", "SUCCESS"));
+		res.setTradeTransactionCancellCount(res.getTradeTransactionCount() - res.getTradeTransactionSuccessCount());
 		return res;
 	}
 
