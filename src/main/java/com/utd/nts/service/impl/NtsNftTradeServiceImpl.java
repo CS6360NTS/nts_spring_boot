@@ -264,7 +264,7 @@ public class NtsNftTradeServiceImpl implements NtsNftTradeService {
 			prevTraderInfoSaveRequest
 					.setEthBalance(prevTraderInfoSaveRequest.getEthBalance() - transRecord.getEthereumValue());
 			curentTraderInfoSaveRequest
-					.setEthBalance(prevTraderInfoSaveRequest.getEthBalance() + transRecord.getEthereumValue());
+					.setEthBalance(curentTraderInfoSaveRequest.getEthBalance() + transRecord.getEthereumValue());
 			NtsNftEntity nts_with_token_Save_Req = nts_with_tokenId.get();
 			nts_with_token_Save_Req.setClientId(nts_with_token_Save_Req.getLastClientId());
 			nts_with_token_Save_Req.setLastClientId(curentTraderInfoSaveRequest.getClientId());
