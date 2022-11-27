@@ -99,7 +99,7 @@ Entity–Relationship Design
 
 [Click here](images/diagram/NFT.drawio.html)
 
-[![ER Diagram](images/diagram/diagram.jpg)](images/diagram/NFT.drawio.html)
+[![ER Diagram](images/diagram/diagram.jpg)](images/diagram/NFT.drawio.pdf)
 
 User Management API’s
 ----
