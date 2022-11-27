@@ -3,8 +3,8 @@ package com.utd.nts.entity;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -19,9 +19,9 @@ public class NtsTradeTransactionHistory implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1670341112198187261L;
-	@Id
-	@Column(name = "transaction_id")
-	int transactionId;
+
+	@EmbeddedId
+	NtsTradeTransactionHistoryPrimaryKey primaryKey;
 
 	@Column(name = "trade_transaction_type")
 	String tradeTransactionType;
@@ -38,40 +38,28 @@ public class NtsTradeTransactionHistory implements Serializable {
 	@Column(name = "nft_address")
 	String nftAddress;
 
-	@Column(name = "nft_tocken_id")
-	String nftTockenId;
-
 	@Column(name = "buyer_ethereum_address")
 	String buyerEthereumAddress;
 
 	@Column(name = "seller_ethereum_address")
 	String sellerEthereumAddress;
 
-	public NtsTradeTransactionHistory() {
-		super();
-	}
-
-	public NtsTradeTransactionHistory(int transactionId, String tradeTransactionType, double ethereumValue,
-			double commissionPaid, String commissionType, String nftAddress, String nftTockenId,
+	public NtsTradeTransactionHistory(NtsTradeTransactionHistoryPrimaryKey primaryKey, String tradeTransactionType,
+			double ethereumValue, double commissionPaid, String commissionType, String nftAddress,
 			String buyerEthereumAddress, String sellerEthereumAddress) {
 		super();
-		this.transactionId = transactionId;
+		this.primaryKey = primaryKey;
 		this.tradeTransactionType = tradeTransactionType;
 		this.ethereumValue = ethereumValue;
 		this.commissionPaid = commissionPaid;
 		this.commissionType = commissionType;
 		this.nftAddress = nftAddress;
-		this.nftTockenId = nftTockenId;
 		this.buyerEthereumAddress = buyerEthereumAddress;
 		this.sellerEthereumAddress = sellerEthereumAddress;
 	}
 
-	public int getTransactionId() {
-		return transactionId;
-	}
-
-	public void setTransactionId(int transactionId) {
-		this.transactionId = transactionId;
+	public NtsTradeTransactionHistory() {
+		super();
 	}
 
 	public String getTradeTransactionType() {
@@ -114,14 +102,6 @@ public class NtsTradeTransactionHistory implements Serializable {
 		this.nftAddress = nftAddress;
 	}
 
-	public String getNftTockenId() {
-		return nftTockenId;
-	}
-
-	public void setNftTockenId(String nftTockenId) {
-		this.nftTockenId = nftTockenId;
-	}
-
 	public String getBuyerEthereumAddress() {
 		return buyerEthereumAddress;
 	}
@@ -138,13 +118,20 @@ public class NtsTradeTransactionHistory implements Serializable {
 		this.sellerEthereumAddress = sellerEthereumAddress;
 	}
 
+	public NtsTradeTransactionHistoryPrimaryKey getPrimaryKey() {
+		return primaryKey;
+	}
+
+	public void setPrimaryKey(NtsTradeTransactionHistoryPrimaryKey primaryKey) {
+		this.primaryKey = primaryKey;
+	}
+
 	@Override
 	public String toString() {
-		return "NtsTradeTransactionHistory [transactionId=" + transactionId + ", tradeTransactionType="
-				+ tradeTransactionType + ", ethereumValue=" + ethereumValue + ", commissionPaid=" + commissionPaid
-				+ ", commissionType=" + commissionType + ", nftAddress=" + nftAddress + ", nftTockenId=" + nftTockenId
-				+ ", buyerEthereumAddress=" + buyerEthereumAddress + ", sellerEthereumAddress=" + sellerEthereumAddress
-				+ "]";
+		return "NtsTradeTransactionHistory [primaryKey=" + primaryKey + ", tradeTransactionType=" + tradeTransactionType
+				+ ", ethereumValue=" + ethereumValue + ", commissionPaid=" + commissionPaid + ", commissionType="
+				+ commissionType + ", nftAddress=" + nftAddress + ", buyerEthereumAddress=" + buyerEthereumAddress
+				+ ", sellerEthereumAddress=" + sellerEthereumAddress + "]";
 	}
 
 }

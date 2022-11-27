@@ -1,5 +1,8 @@
 package com.utd.nts.controller;
 
+import java.sql.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,13 +13,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.utd.nts.common.pojo.ServerStatusResponsePojo;
+import com.utd.nts.entity.NtsMoneyTransactionHistory;
+import com.utd.nts.entity.NtsTradeTransactionHistory;
+import com.utd.nts.entity.NtsTransactionHistory;
+import com.utd.nts.repository.NtsMoneyTransactionHistoryRepo;
+import com.utd.nts.repository.NtsTradeTransactionHistoryRepo;
+import com.utd.nts.reqres.pojo.ManagerStatisticsRes;
 import com.utd.nts.reqres.pojo.NFTRes;
 import com.utd.nts.reqres.pojo.NFTsRes;
 import com.utd.nts.reqres.pojo.NewUserRequest;
+import com.utd.nts.reqres.pojo.NtsNftTradeReq;
 import com.utd.nts.reqres.pojo.NtsTradeUserResponse;
 import com.utd.nts.reqres.pojo.NtsUserResponse;
+import com.utd.nts.service.EthUsdService;
 import com.utd.nts.service.NFTService;
 import com.utd.nts.service.NtsMoneyService;
+import com.utd.nts.service.NtsNftTradeService;
+import com.utd.nts.service.TransactionHistoryService;
 import com.utd.nts.service.UserService;
 
 @RestController
@@ -31,6 +44,21 @@ public class NTSController {
 
 	@Autowired
 	NtsMoneyService ntsMoneyService;
+
+	@Autowired
+	NtsNftTradeService ntsNftTradeService;
+
+	@Autowired
+	TransactionHistoryService transactionHistoryService;
+
+	@Autowired
+	NtsTradeTransactionHistoryRepo ntsTradeTransactionHistoryRepo;
+
+	@Autowired
+	NtsMoneyTransactionHistoryRepo ntsMoneyTransactionHistoryRepo;
+
+	@Autowired
+	EthUsdService ethUsdService;
 
 	/** User API's **/
 	@GetMapping("/demo")
@@ -130,5 +158,50 @@ public class NTSController {
 	/**
 	 * Trade Transaction API's
 	 */
-	
+	@PostMapping(path = "/performTrade", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ServerStatusResponsePojo performTrade(@RequestBody NtsNftTradeReq req) {
+		return ntsNftTradeService.validateAndCompleteTheTradeTransaction(req);
+	}
+
+	@GetMapping("getCurrentEthValue")
+	public double getCurrentEthValue() {
+		return ethUsdService.getTheUsdValue();
+	}
+
+	/**
+	 * 
+	 * Transaction API's
+	 */
+	@GetMapping("/getAllTransactions")
+	List<NtsTransactionHistory> getAllTransactions() {
+		return transactionHistoryService.getAll();
+	}
+
+	@GetMapping("/getAllTransactionsByClientId")
+	List<NtsTransactionHistory> getAllTransactionsByClientId(@RequestParam int clientId) {
+		return transactionHistoryService.getAllTransactionsByClientId(clientId);
+	}
+
+	@GetMapping("/getAllTradeTransactionsByTransactionId")
+	List<NtsTradeTransactionHistory> getMoreDetailsAboutTradeTransaction(@RequestParam int transactionId) {
+		return ntsTradeTransactionHistoryRepo.findByTransactionId(transactionId);
+	}
+
+	@GetMapping("/getAllMoneyTransactionsByTransactionId")
+	NtsMoneyTransactionHistory getMoreDetailsAboutMoneyTransaction(@RequestParam int transactionId) {
+		return ntsMoneyTransactionHistoryRepo.findByTransactionId(transactionId);
+	}
+
+	@GetMapping("/validateAndCancelTheTransaction")
+	ServerStatusResponsePojo validateAndCancelTheTransaction(@RequestParam int transactionId) {
+		return ntsNftTradeService.validateAndCancelTheTransaction(transactionId);
+	}
+
+	/**
+	 * Manager Statistics API's
+	 */
+	@GetMapping("/getManagerStatistics")
+	ManagerStatisticsRes getTheManagerStaistics(@RequestParam Date startDate, @RequestParam Date endDate) {
+		return transactionHistoryService.getManagerStatistics(startDate, endDate);
+	}
 }

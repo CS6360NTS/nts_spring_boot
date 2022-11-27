@@ -13,7 +13,7 @@ import com.utd.nts.entity.NtsNftEntity;
  *
  */
 public interface NftRepo extends JpaRepository<NtsNftEntity, String> {
-
+ 
 	@Query(value = "SELECT * FROM nts_nft N WHERE N.contract_ethereum_address=?1", nativeQuery = true)
 	Collection<NtsNftEntity> findAllByContractEthereumAddress(String contractEthereumAddress);
 
