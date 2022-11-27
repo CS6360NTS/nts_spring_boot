@@ -13,6 +13,9 @@ public interface NtsTransactionHistoryRepo extends JpaRepository<NtsTransactionH
 	@Query(value = "SELECT COUNT(*) FROM nts_db.nts_transaction_history th where th.transaction_date>=?1 and th.transaction_date<=?2 and th.transaction_type =?3", nativeQuery = true)
 	int getTradeTransactionCount(Date startDate, Date endDate, String type);
 
+	@Query(value = "SELECT COUNT(*) FROM nts_db.nts_transaction_history th where th.transaction_date>=?1 and th.transaction_date<=?2 and th.transaction_type =?3 and th.transaction_status =?4", nativeQuery = true)
+	int getCountOfType(Date startDate, Date endDate, String type, String status);
+
 	List<NtsTransactionHistory> findByclientId(int clientId);
 
 }

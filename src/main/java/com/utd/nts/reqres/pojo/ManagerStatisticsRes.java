@@ -3,6 +3,8 @@ package com.utd.nts.reqres.pojo;
 public class ManagerStatisticsRes {
 	int moneyTransactionCount;
 	int tradeTransactionCount;
+	int tradeTransactionSuccessCount;
+	int tradeTransactionCancellCount;
 	double ethCommissionAmount;
 	double faitCommissionAmount;
 
@@ -10,13 +12,31 @@ public class ManagerStatisticsRes {
 		super();
 	}
 
-	public ManagerStatisticsRes(int moneyTransactionCount, int tradeTransactionCount, double ethCommissionAmount,
-			double faitCommissionAmount) {
+	public ManagerStatisticsRes(int moneyTransactionCount, int tradeTransactionCount, int tradeTransactionSuccessCount,
+			int tradeTransactionCancellCount, double ethCommissionAmount, double faitCommissionAmount) {
 		super();
 		this.moneyTransactionCount = moneyTransactionCount;
 		this.tradeTransactionCount = tradeTransactionCount;
+		this.tradeTransactionSuccessCount = tradeTransactionSuccessCount;
+		this.tradeTransactionCancellCount = tradeTransactionCancellCount;
 		this.ethCommissionAmount = ethCommissionAmount;
 		this.faitCommissionAmount = faitCommissionAmount;
+	}
+
+	public int getTradeTransactionSuccessCount() {
+		return tradeTransactionSuccessCount;
+	}
+
+	public void setTradeTransactionSuccessCount(int tradeTransactionSuccessCount) {
+		this.tradeTransactionSuccessCount = tradeTransactionSuccessCount;
+	}
+
+	public int getTradeTransactionCancellCount() {
+		return tradeTransactionCancellCount;
+	}
+
+	public void setTradeTransactionCancellCount(int tradeTransactionCancellCount) {
+		this.tradeTransactionCancellCount = tradeTransactionCancellCount;
 	}
 
 	public int getMoneyTransactionCount() {
@@ -54,8 +74,9 @@ public class ManagerStatisticsRes {
 	@Override
 	public String toString() {
 		return "ManagerStatisticsRes [moneyTransactionCount=" + moneyTransactionCount + ", tradeTransactionCount="
-				+ tradeTransactionCount + ", ethCommissionAmount=" + ethCommissionAmount + ", faitCommissionAmount="
-				+ faitCommissionAmount + "]";
+				+ tradeTransactionCount + ", tradeTransactionSuccessCount=" + tradeTransactionSuccessCount
+				+ ", tradeTransactionCancellCount=" + tradeTransactionCancellCount + ", ethCommissionAmount="
+				+ ethCommissionAmount + ", faitCommissionAmount=" + faitCommissionAmount + "]";
 	}
 
 }

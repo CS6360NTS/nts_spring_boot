@@ -18,10 +18,12 @@ import com.utd.nts.entity.NtsNftEntity;
 import com.utd.nts.entity.NtsTradeTransactionHistory;
 import com.utd.nts.entity.NtsTradeTransactionHistoryPrimaryKey;
 import com.utd.nts.entity.NtsTransactionHistory;
+import com.utd.nts.entity.NtsTransactionHistoryLogsEntity;
 import com.utd.nts.entity.NtsUserTraderEntity;
 import com.utd.nts.repository.NftRepo;
 import com.utd.nts.repository.NtsCommissionRepo;
 import com.utd.nts.repository.NtsTradeTransactionHistoryRepo;
+import com.utd.nts.repository.NtsTransHistoryLogs;
 import com.utd.nts.repository.NtsTransactionHistoryRepo;
 import com.utd.nts.repository.NtsUserTraderRepository;
 import com.utd.nts.reqres.pojo.NtsNftTradeReq;
@@ -55,6 +57,9 @@ public class NtsNftTradeServiceImpl implements NtsNftTradeService {
 
 	@Autowired
 	private NtsCommissionRepo ntsCommissionRepo;
+
+	@Autowired
+	private NtsTransHistoryLogs ntsTransHistoryLogs;
 
 	@Override
 	public ServerStatusResponsePojo validateAndCompleteTheTradeTransaction(NtsNftTradeReq req) {
@@ -200,16 +205,14 @@ public class NtsNftTradeServiceImpl implements NtsNftTradeService {
 				serverRes.setSuccess(false);
 				return serverRes;
 			}
+			NtsTransactionHistoryLogsEntity log_req = new NtsTransactionHistoryLogsEntity();
+
 			Date d = java.sql.Timestamp.valueOf(LocalDateTime.now());
 			java.sql.Date currentDate = new java.sql.Date(d.getTime());
-			System.out.println(Time.valueOf(LocalTime.now()));
-			System.out.println(thres.get().getTransactionTime());
 			@SuppressWarnings("deprecation")
 			int hourDiff = Time.valueOf(LocalTime.now()).getHours() - thres.get().getTransactionTime().getHours();
 			@SuppressWarnings("deprecation")
 			int minDiff = Time.valueOf(LocalTime.now()).getMinutes() - thres.get().getTransactionTime().getMinutes();
-			System.out.println(hourDiff);
-			System.out.println(minDiff);
 			if (thres.get().getTransaction_date().toString().compareTo(currentDate.toString()) != 0 || hourDiff != 0
 					|| minDiff >= 15) {
 				serverRes.setErrorMessage("Can't revert this transaction as it's been morethan 15 minutes");
@@ -219,8 +222,15 @@ public class NtsNftTradeServiceImpl implements NtsNftTradeService {
 			}
 			NtsTransactionHistory thres_save_req = thres.get();
 			thres_save_req.setTransactionStatus("Cancelled");
+			thres_save_req.setTransaction_date(currentDate);
+			thres_save_req.setTransactionTime(Time.valueOf(LocalTime.now()));
 			ntsTransactionHistoryRepo.save(thres_save_req);
-
+			log_req.setClientId(thres.get().getClient_id());
+			log_req.setTransactionId(transactionId);
+			log_req.setLogDescription("Cancelled Trade Transaction");
+			log_req.setLogDate(currentDate);
+			log_req.setLogTime(Time.valueOf(LocalTime.now()));
+			ntsTransHistoryLogs.save(log_req);
 			Optional<NtsUserTraderEntity> curentTraderInfo = ntsUserTraderRepository
 					.findById(thres.get().getClient_id());
 			if (curentTraderInfo.isEmpty()) {
