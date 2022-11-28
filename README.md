@@ -1,10 +1,12 @@
 # Introduction to Database Design (CS 6360)
 by [Dr. Murat Kantarcioglu](https://personal.utdallas.edu/~muratk/courses/db22f.html)
 ----
-----
-![Project Logo](images/logo/utd-logo.png)
 
+____
+![Project Logo](images/logo/utd-logo.png)
 ----
+
+____
 Project: 
 ----
 
@@ -68,10 +70,11 @@ for daily, weekly and monthly total transactions based on the dates entered by t
 manager.
 
 Useful Links:
-- [https://www.investopedia.com/non-fungible-tokens-nft-5115211](https://www.investopedia.com/non-fungible-tokens-nft-5115211)
-- [https://ethereum.org/en/nft/](https://ethereum.org/en/nft/)
-- [https://docs.cloud.coinbase.com/sign-in-with-coinbase/docs/api-prices](https://docs.cloud.coinbase.com/sign-in-with-coinbase/docs/api-prices)
+- About NFT: [https://www.investopedia.com/non-fungible-tokens-nft-5115211](https://www.investopedia.com/non-fungible-tokens-nft-5115211)
+- About Blockchain: [https://ethereum.org/en/nft/](https://ethereum.org/en/nft/)
+- Check current ETH price: [https://docs.cloud.coinbase.com/sign-in-with-coinbase/docs/api-prices](https://docs.cloud.coinbase.com/sign-in-with-coinbase/docs/api-prices)
 
+____
 Software Requirements
 ----
 
@@ -80,6 +83,7 @@ Software Requirements
 3. STS: 4(Recommend code editor, but mandatory)
 4. Git: latest version
 
+____
 Process to check in:
 ----
 
@@ -91,12 +95,13 @@ Process to check in:
 6. Up the server.
 7. Hit localhost:8080/nts/demo (To test the installation)
 
-
+____
 Entity–Relationship Design
 ----
 
-![ER Diagram](images/diagram/NFT.drawio.png)
+[![ER Diagram](images/diagram/NFT.drawio.png)](images/diagram/NFT.drawio.pdf)
 
+____
 User Management API’s
 ----
 
@@ -129,83 +134,138 @@ User Management API’s
 
 Note: When your server runs then replace **localhost:8080** with the new IP and Port, i.e. **34.66.65.153:8080**
 
-
+____
 Examples
 ----
 
-```
+* POST requests: 
+    * `34.66.65.153:8080/nts/addUser`: Request and pass the `Body_addUser` and get the corresponding `Output_addUser`.
+    * `34.66.65.153:8080/nts/updateUser`: Request and pass the `Body_updateUser` and get the corresponding `Output_updateUser`
+    * `34.66.65.153:8080/nts/performTrade`: Request and pass the `Body_performTrade` and get the corresponding `Output_performTrade`.
 
-```
-
+Body_addUser:
 ```json
 {
-    "customerList": [
-        {
-            "clientId": 1,
-            "firstName": "Navaneeth Kumar",
-            "lastName": "Buddi",
-            "emailId": "navaneethkumar.buddi@gmail.com",
-            "phoneNumber": "9452449423",
-            "cellPhoneNumber": "7259047234",
-            "userType": "T",
-            "streetAddress": "9693 Baltic LN",
-            "city": "Frisco",
-            "state": "Texas",
-            "zipCode": "75030",
-            "password": "password"
-        },
-        {
-            "clientId": 2,
-            "firstName": "Indu",
-            "lastName": "C",
-            "emailId": "indu.c@gmail.com",
-            "phoneNumber": "9452449423",
-            "cellPhoneNumber": "7259047234",
-            "userType": "T",
-            "streetAddress": "9693 Baltic LN",
-            "city": "Frisco",
-            "state": "Texas",
-            "zipCode": "75030",
-            "password": "password"
-        },
-        {
-            "clientId": 3,
-            "firstName": "Navaneeth Kumar",
-            "lastName": "Buddi",
-            "emailId": "navaneethkumar.buddi@gmail.com",
-            "phoneNumber": "9452449423",
-            "cellPhoneNumber": "7259047234",
-            "userType": "M",
-            "streetAddress": "9693 Baltic LN",
-            "city": "Frisco",
-            "state": "Texas",
-            "zipCode": "75030",
-            "password": "password"
-        },
-        {
-            "clientId": 4,
-            "firstName": "Indu",
-            "lastName": "C",
-            "emailId": "indu.c@gmail.com",
-            "phoneNumber": "9452449423",
-            "cellPhoneNumber": "7259047234",
-            "userType": "M",
-            "streetAddress": "9693 Baltic LN",
-            "city": "Frisco",
-            "state": "Texas",
-            "zipCode": "75030",
-            "password": "password"
-        }
-    ],
-    "serverResponse": {
-        "responseCode": 200,
-        "errorMessage": "SUCCESS",
-        "success": true
+    "userInfo": {
+        "firstName": "Christos",
+        "lastName": "v",
+        "emailId": "christos@gmail.com",
+        "phoneNumber": "6984756132",
+        "cellPhoneNumber": "7259047234",
+        "userType": "T",
+        "streetAddress": "2203 Webster Rd",
+        "city": "Plano",
+        "state": "Texas",
+        "zipCode": "75075",
+        "password": "password"
     }
 }
 ```
 
-## The Team
+Output_addUser:
+```json
+{
+    "userInfo": {
+        "clientId": 1000,
+        "firstName": "Christos",
+        "lastName": "v",
+        "emailId": "christos@gmail.com",
+        "phoneNumber": "6984756132",
+        "cellPhoneNumber": "7259047234",
+        "userType": "T",
+        "streetAddress": "2203 Webster Rd",
+        "city": "Plano",
+        "state": "Texas",
+        "zipCode": "75075",
+        "password": "password"
+    },
+    "tradeInfo": {
+        "clientId": 1000,
+        "ethereumAddress": "a6697677-cefe-4011-9842-2aa37fe1b53e",
+        "balance": 1000.0,
+        "traderLevel": "silver",
+        "ethBalance": 0.0,
+        "active": true
+    },
+    "serverResponse": {
+        "responseCode": 200,
+        "errorMessage": "SUCCESS",
+        "success": true
+    },
+    "ntsUserManagerEntity": null
+}
+```
+
+Body_updateUser:
+```json
+{
+    "userInfo": {
+        "clientId": 1000,
+        "firstName": "Christos",
+        "lastName": "Vasileiou",
+        "emailId": "christos.v@gmail.com",
+        "phoneNumber": "6984756132",
+        "cellPhoneNumber": "7259047234",
+        "streetAddress": "West Renner Rd",
+        "city": "Richardson",
+        "state": "Texas",
+        "zipCode": "75080",
+        "password": "password"
+    }
+}
+```
+Output_updateUser:
+```json
+{
+    "userInfo": {
+        "clientId": 1000,
+        "firstName": "Christos",
+        "lastName": "Vasileiou",
+        "emailId": "christos.v@gmail.com",
+        "phoneNumber": "6984756132",
+        "cellPhoneNumber": "7259047234",
+        "userType": "T",
+        "streetAddress": "West Renner Rd",
+        "city": "Plano",
+        "state": "Texas",
+        "zipCode": "75075",
+        "password": "password"
+    },
+    "tradeInfo": null,
+    "serverResponse": {
+        "responseCode": 200,
+        "errorMessage": "SUCCESS",
+        "success": true
+    },
+    "ntsUserManagerEntity": null
+}
+```
+
+Body_performTrade:
+```json
+{
+    "tokenIds": [
+        "a608992e-5195-11ed-83af-004e01c09a92",
+        "cac07bcb-5195-11ed-83af-004e01c09a92"
+    ],
+    "clientId":1000,
+    "totalCartValue":3,
+    "commissionType":"fait"
+}
+```
+Output_performTrade:
+```json
+{
+    "responseCode": 200,
+    "errorMessage": "SUCCESS",
+    "success": true
+}
+```
+
+____
+The Team
+----
+
 | Name                                                          | Contact |
 |---------------------------------------------------------------|---------|
 | [Navaneeth Kumar Buddi](navaneethkumar.buddi@utdallas.edu)    | [navaneethkumar.buddi@utdallas.edu](navaneethkumar.buddi@utdallas.edu) |
@@ -213,5 +273,4 @@ Examples
 | [Harshavardhini Sridhar](harshavardhini.sridhar@utdallas.edu) | [harshavardhini.sridhar@utdallas.edu](harshavardhini.sridhar@utdallas.edu) | 
 | [Christos Vasileiou](christos.vasileiou@utdallas.edu)         | [christos.vasileiou@utdallas.edu](christos.vasileiou@utdallas.edu) |
 |  [Dibyanshi Singh](dibyanshi.singh@utdallas.edu) | [dibyanshi.singh@utdallas.edu](dibyanshi.singh@utdallas.edu) |
-
 
