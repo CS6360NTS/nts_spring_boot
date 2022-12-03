@@ -53,6 +53,8 @@ public class NtsNftEntity implements Serializable {
 	@Column(name = "is_open_for_trade")
 	boolean isOpenForTrade;
 
+	double currentUSDValue;
+
 	public NtsNftEntity() {
 		super();
 	}
@@ -150,6 +152,14 @@ public class NtsNftEntity implements Serializable {
 
 	public void setLastClientId(int lastClientId) {
 		this.lastClientId = lastClientId;
+	}
+
+	public double getCurrentUSDValue() {
+		return currentUSDValue;
+	}
+
+	public void setCurrentUSDValue(double currentUSDValue) {
+		this.currentUSDValue = currentUSDValue;
 	}
 
 	@Override

@@ -20,6 +20,7 @@ import com.utd.nts.repository.NftRepo;
 import com.utd.nts.reqres.pojo.NFTRes;
 import com.utd.nts.reqres.pojo.NFTsRes;
 import com.utd.nts.reqres.pojo.NtsTradeUserResponse;
+import com.utd.nts.service.EthUsdService;
 import com.utd.nts.service.NFTService;
 import com.utd.nts.service.UserService;
 
@@ -36,6 +37,9 @@ public class NFTServiceImpl implements NFTService {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	EthUsdService ethUsdService;
 
 	@Override
 	public NFTsRes getAllNtfs() {
@@ -171,9 +175,19 @@ public class NFTServiceImpl implements NFTService {
 	@Override
 	public NFTsRes getAllNftsWithTheClientId(int clientId) {
 		NFTsRes res = new NFTsRes();
+		double usdAamount = ethUsdService.getTheUsdValue();
+		Collection<NtsNftEntity> collection = new ArrayList<NtsNftEntity>();
 		ServerStatusResponsePojo serverRes = new ServerStatusResponsePojo();
 		try {
+
 			res.setNfts(nftRepo.findAllNftsByClientId(clientId));
+			for (NtsNftEntity ele : res.getNfts()) {
+				double value = ele.getEthPrice();
+				ele.setCurrentUSDValue(Math.round(usdAamount * value));
+				collection.add(ele);
+
+			}
+			res.setNfts(collection);
 		} catch (Exception e) {
 			log.error("Exception occured while fetching the NFT's form the DB" + e.getMessage());
 			serverRes.setErrorMessage("Error occured at NFTServiceImpl.getAllNftsWithTheClientId");
