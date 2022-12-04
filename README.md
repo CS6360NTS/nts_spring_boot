@@ -270,7 +270,7 @@ The Team
 |-------------------------------------------------------------------|---------|
 | [Navaneeth Kumar Buddi](mailto:navaneethkumar.buddi@utdallas.edu) | [navaneethkumar.buddi@utdallas.edu](mailto:navaneethkumar.buddi@utdallas.edu) |
 | [Indupriya Chegireddy](mailto:indupriya.chegireddy@utdallas.edu)         | [indupriya.chegireddy@utdallas.edu](mailto:indupriya.chegireddy@utdallas.edu) |
-| [Harshavardhini Sridhar](mailto:harshavardhini.sridhar@utdallas.edu)     | [harshavardhini.sridhar@utdallas.edu](mailto:harshavardhini.sridhar@utdallas.edu) | 
 | [Christos Vasileiou](mailto:christos.vasileiou@utdallas.edu)             | [christos.vasileiou@utdallas.edu](mailto:christos.vasileiou@utdallas.edu) |
+| [Harshavardhini Sridhar](mailto:harshavardhini.sridhar@utdallas.edu)     | [harshavardhini.sridhar@utdallas.edu](mailto:harshavardhini.sridhar@utdallas.edu) | 
 | [Dibyanshi Singh](mailto:dibyanshi.singh@utdallas.edu)                   | [dibyanshi.singh@utdallas.edu](mailto:dibyanshi.singh@utdallas.edu) |
 
