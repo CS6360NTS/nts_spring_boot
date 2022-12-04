@@ -158,7 +158,7 @@ public class NtsNftTradeServiceImpl implements NtsNftTradeService {
 							? nts_with_tokenId.get().getEthPrice() * 0.10
 							: nts_with_tokenId.get().getEthPrice() * 0.10 * ethUsdService.getTheUsdValue();
 				}
-				if (req.getCommissionType().toLowerCase().equals("fait")) {
+				if (!req.getCommissionType().toLowerCase().equals("eth")) {
 					buyerTraderInfoSaveReq.setBalance(buyerTraderInfoSaveReq.getBalance() - commisionAmmount);
 					ntsCommissionEntitySaveReq.setFiatCurrencyAmount(
 							ntsCommissionEntitySaveReq.getFiatCurrencyAmount() + commisionAmmount);
