@@ -43,7 +43,7 @@ public class TransactionHistoryServiceImpl implements TransactionHistoryService 
 
 	@Override
 	public List<NtsTransactionHistory> getAllTransactionsByClientId(int clientId) {
-		return ntsTransactionHistoryRepo.findByclientId(clientId);
+		return ntsTransactionHistoryRepo.findByclientid(clientId);
 	}
 
 }

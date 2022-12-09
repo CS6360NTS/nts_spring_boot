@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.utd.nts.common.pojo.ServerStatusResponsePojo;
 import com.utd.nts.entity.NtsMoneyTransactionHistory;
+import com.utd.nts.entity.NtsNftEntity;
 import com.utd.nts.entity.NtsTradeTransactionHistory;
 import com.utd.nts.entity.NtsTransactionHistory;
+import com.utd.nts.repository.NftRepo;
 import com.utd.nts.repository.NtsMoneyTransactionHistoryRepo;
 import com.utd.nts.repository.NtsTradeTransactionHistoryRepo;
 import com.utd.nts.reqres.pojo.ManagerStatisticsRes;
@@ -59,6 +61,9 @@ public class NTSController {
 
 	@Autowired
 	EthUsdService ethUsdService;
+
+	@Autowired
+	NftRepo nftRepo;
 
 	/** User API's **/
 	@GetMapping("/demo")
@@ -112,6 +117,17 @@ public class NTSController {
 	@GetMapping("/get/nft")
 	public NFTsRes getAllNftsWithTheClientId(@RequestParam int clientId) {
 		return nFTService.getAllNftsWithTheClientId(clientId);
+	}
+
+	@PostMapping(path = "/updateNft", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public boolean updateNft(@RequestBody NtsNftEntity req) {
+		try {
+			
+			nftRepo.save(req);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
 	}
 
 	@GetMapping("/get/trade/nft")
