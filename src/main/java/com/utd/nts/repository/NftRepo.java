@@ -20,7 +20,7 @@ public interface NftRepo extends JpaRepository<NtsNftEntity, String> {
 	@Query(value = "SELECT * from nts_db.nts_nft where nts_db.nts_nft.client_id =?1 order by nts_db.nts_nft.last_modified_date, nts_db.nts_nft.last_modified_time DESC;", nativeQuery = true)
 	Collection<NtsNftEntity> findAllNftsByClientId(Integer clientId);
 
-	@Query(value = "SELECT * from nts_db.nts_nft where nts_db.nts_nft.client_id <>?1 order by nts_db.nts_nft.last_modified_date, nts_db.nts_nft.last_modified_time DESC;", nativeQuery = true)
+	@Query(value = "SELECT * from nts_db.nts_nft where nts_db.nts_nft.client_id <>?1 and nts_db.nts_nft.is_open_for_trade = true order by nts_db.nts_nft.last_modified_date, nts_db.nts_nft.last_modified_time DESC;", nativeQuery = true)
 	Collection<NtsNftEntity> findAllNftsByExcludingClientId(Integer clientId);
 
 }
