@@ -14,7 +14,7 @@ pipeline {
         stage ('Build') {
             steps {
                 //sh '/usr/local/maven/bin/mvn -Dmaven.test.failure.ignore=true install' 
-                sh '/opt/maven/bin/mvn -Dmaven.test.failure.ignore=true install'
+                sh '/usr/share/maven/bin/mvn -Dmaven.test.failure.ignore=true install'
             }
             
 
