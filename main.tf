@@ -5,7 +5,7 @@ resource "google_compute_instance" "testing" {
 
   boot_disk {
     initialize_params {
-      image = "centos-cloud/centos-7"
+      image = "centos-7-v20230203"
     }
   }
 
@@ -27,7 +27,7 @@ resource "google_compute_instance" "testing" {
 
   service_account {
     # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
-    email  = terraform-testing@fourth-arena-379102.iam.gserviceaccount.com
+    email  = 148225735457-compute@developer.gserviceaccount.com
     scopes = ["cloud-platform"]
   }
 }
