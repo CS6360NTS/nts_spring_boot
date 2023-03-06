@@ -21,7 +21,7 @@ pipeline {
         }
         stage ('Docker Build') {
             steps {
-                sh 'docker build -t gcr.io/	fourth-arena-379102/app:$BUILD_NUMBER  .' 
+                sh 'docker build -t gcr.io/fourth-arena-379102/app:3' 
             }
             
 
@@ -29,7 +29,7 @@ pipeline {
         stage ('Docker push') {
             steps {
                 sh 'gcloud auth configure-docker'
-                sh 'docker push  gcr.io/fourth-arena-379102/app:$BUILD_NUMBER' 
+                sh 'docker push  gcr.io/fourth-arena-379102/app:3' 
             }
             
 
