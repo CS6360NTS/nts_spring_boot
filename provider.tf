@@ -1,4 +1,4 @@
 provider "google" {
-credentials = file("terraform-testing@fourth-arena-379102.iam.gserviceaccount.com")
+credentials = file("148225735457-compute@developer.gserviceaccount.com")
 project = var.fourth-arena-379102
 }
